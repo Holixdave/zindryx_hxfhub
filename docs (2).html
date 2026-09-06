@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zindryx — Help & What's New</title>
+
+<link rel="icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
+<link rel="apple-touch-icon" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
+<meta property="og:title" content="Zindryx — Help & What's New">
+<meta property="og:description" content="What's new in Zindryx, plus help with invites, messaging, and more.">
+<meta property="og:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zindryx — Help & What's New">
+<meta name="twitter:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
+<script>
+  (function () {
+    var stored = null;
+    try { stored = localStorage.getItem("zindryx-theme"); } catch (e) {}
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --accent: #BB86FC;
+    --accent-strong: #3D2358;
+    --radius: 14px;
+    --font-head: 'Poppins', sans-serif;
+    --font-body: 'Lora', serif;
+  }
+
+  [data-theme="light"] {
+    --bg: #F5F5F5;
+    --surface: #FFFFFF;
+    --surface-2: #FBFAFC;
+    --border: #E4DEEC;
+    --text: #1A0033;
+    --text-secondary: #5C5468;
+    --text-muted: #8B8494;
+  }
+
+  [data-theme="dark"] {
+    --bg: #131019;
+    --surface: #1C1C1E;
+    --surface-2: #1A1A24;
+    --border: #2E2A38;
+    --text: #F2EEFA;
+    --text-secondary: #B8B0C6;
+    --text-muted: #837C90;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 20px 48px;
+  }
+  .wrap { max-width: 480px; width: 100%; }
+
+  .wordmark {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .tagline { font-size: 13px; color: var(--text-muted); margin: 0 0 28px; font-style: italic; }
+
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: var(--font-head);
+    font-size: 15px; font-weight: 600;
+    margin: 0 0 14px;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--accent-strong);
+  }
+  [data-theme="dark"] h2 { color: var(--accent); }
+  p { font-size: 14px; line-height: 1.65; color: var(--text-secondary); margin: 0 0 10px; }
+  p:last-child { margin-bottom: 0; }
+
+  .feature-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+  }
+  .feature-row:first-of-type { border-top: none; padding-top: 0; }
+  .feature-text { flex: 1; }
+  .feature-title { font-family: var(--font-head); font-size: 13.5px; font-weight: 600; margin: 0 0 2px; }
+  .feature-desc { font-size: 12.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+  .feature-btn {
+    flex-shrink: 0;
+    font-family: var(--font-head);
+    font-size: 12.5px; font-weight: 600;
+    background: var(--surface-2); color: var(--accent-strong);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 12px;
+    cursor: pointer;
+  }
+  [data-theme="dark"] .feature-btn { color: var(--accent); }
+  .feature-btn:active { opacity: 0.8; }
+
+  .btn-row { display: flex; flex-direction: column; gap: 10px; }
+  .btn-primary, .btn-secondary {
+    width: 100%; padding: 13px; border-radius: 10px;
+    font-family: var(--font-head); font-size: 14.5px; font-weight: 600;
+    cursor: pointer; border: none; text-align: center; text-decoration: none;
+    display: block;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-strong); }
+  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+
+  .faq-item summary {
+    font-family: var(--font-head);
+    font-size: 13.5px; font-weight: 600;
+    cursor: pointer; padding: 12px 0;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: '+'; float: right; color: var(--accent); font-weight: 400; }
+  .faq-item[open] summary::after { content: '–'; }
+  .faq-item p { padding-bottom: 12px; }
+  .faq-item { border-top: 1px solid var(--border); }
+  .faq-item:first-of-type { border-top: none; }
+
+  .footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 22px; line-height: 1.6; }
+  .footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .theme-row {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 14px;
+  }
+  .theme-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-head);
+    font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted);
+    cursor: pointer;
+  }
+  .theme-btn.active { background: var(--accent); color: var(--accent-strong); border-color: transparent; }
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--accent-strong); color: #fff;
+    font-family: var(--font-head); font-size: 13px;
+    padding: 10px 18px; border-radius: 10px;
+    opacity: 0; transition: opacity 0.25s; pointer-events: none;
+  }
+  /* ============================================================
+     Phone frame — iOS-style shell wrapping the chat demo
+     ============================================================ */
+  .phone-frame {
+    width: 260px;
+    margin: 14px auto 4px;
+    background: #0b0b0d;
+    border-radius: 34px;
+    padding: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  }
+  .phone-screen {
+    background: var(--surface);
+    border-radius: 26px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ============================================================
+     Demo carousel — horizontal scroll-snap of phone-frame demos,
+     with a draggable bar (like a scrollbar) and shift+wheel support.
+     ============================================================ */
+  .demo-carousel { margin: 14px 0 4px; }
+  .demo-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .demo-track::-webkit-scrollbar { display: none; }
+  .demo-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .demo-slide-title {
+    font-family: var(--font-head);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent-strong);
+    margin: 0 0 2px;
+  }
+  .demo-slide-caption {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 260px;
+    margin: 8px 0 0;
+  }
+  .demo-scrollbar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 260px;
+    margin: 12px auto 0;
+  }
+  .demo-scrollbar-track {
+    position: relative;
+    flex: 1;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--border);
+    cursor: pointer;
+  }
+  .demo-scrollbar-thumb {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    cursor: grab;
+    transition: left 0.08s linear;
+  }
+  .demo-scrollbar-thumb:active { cursor: grabbing; transition: none; }
+  .demo-slide-count {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    font-family: var(--font-head);
+    min-width: 28px;
+    text-align: right;
+  }
+
+  .phone-statusbar {
+    height: 30px;
+    background: #BB86FC;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px;
+    font-family: var(--font-head);
+    font-size: 11px; font-weight: 600; color: #fff;
+    position: relative;
+  }
+  .phone-notch {
+    position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 16px; background: #0b0b0d; border-radius: 10px;
+  }
+  .phone-statusbar .status-icons { display: flex; align-items: center; gap: 3px; }
+
+  .app-header {
+    background: #BB86FC;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px 10px;
+  }
+  .app-header svg.back-arrow { color: #fff; flex-shrink: 0; }
+  .app-header .header-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    flex-shrink: 0;
+  }
+  .app-header .header-text { flex: 1; min-width: 0; }
+  .app-header .header-name {
+    font-family: var(--font-head);
+    font-size: 12.5px; font-weight: 600; color: #fff;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .app-header .header-subtitle {
+    font-size: 10px; color: #fff; opacity: 0.9;
+    display: flex; align-items: center; gap: 3px;
+    height: 13px;
+  }
+  .app-header .header-icons { display: flex; gap: 8px; color: #fff; flex-shrink: 0; }
+
+  .typing-dot-row { display: flex; align-items: center; gap: 2px; }
+  .typing-dot-row .dot {
+    width: 3px; height: 3px; border-radius: 50%; background: #fff;
+    animation: dotPulse 1s infinite ease-in-out;
+  }
+  .typing-dot-row .dot:nth-child(2) { animation-delay: 0.15s; }
+  .typing-dot-row .dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes dotPulse { 0%, 60%, 100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-2px); } }
+
+  .phone-chat-body {
+    background:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 85% 20%, rgba(255,255,255,0.4), transparent),
+      #14101c;
+    min-height: 400px;
+    padding: 14px 10px;
+    display: flex; flex-direction: column; gap: 7px;
+    justify-content: flex-end;
+  }
+
+  .demo-row { display: flex; opacity: 0; transform: translateY(6px); transition: opacity 0.3s ease, transform 0.3s ease; }
+  .demo-row.in { justify-content: flex-start; }
+  .demo-row.out { justify-content: flex-end; }
+  .demo-row.show { opacity: 1; transform: translateY(0); }
+
+  /* System message cards inside the demo phone — mirror InviteSharedCard
+     and GroupWelcomeCard from the app exactly (same hex values), always
+     dark regardless of site theme since they sit on the phone's own
+     dark chat wallpaper, same as the message bubbles above. */
+  .sys-card {
+    width: 100%;
+    background: #1E1E1E;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .sys-card.show { opacity: 1; transform: translateY(0); }
+  .sys-card-row { display: flex; align-items: flex-start; gap: 10px; }
+  .sys-card-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(187,134,252,0.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sys-card-title { font-size: 13px; color: #fff; font-weight: 600; margin: 0 0 2px; }
+  .sys-card-sub { font-size: 11px; color: #9a9a9a; margin: 0; transition: opacity 0.2s ease; }
+  .sys-card-actions { display: flex; gap: 14px; margin-top: 8px; }
+  .sys-card-action { display: flex; align-items: center; gap: 4px; font-size: 11.5px; color: #BB86FC; font-weight: 600; }
+
+  .welcome-card {
+    width: 100%;
+    background: #1E1E1E;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .welcome-card.show { opacity: 1; transform: translateY(0); }
+  .welcome-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(187,134,252,0.18);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+  }
+  .welcome-count { font-size: 11px; color: #9a9a9a; margin: 0 0 8px; }
+  .welcome-headline { font-size: 12.5px; color: #fff; margin: 0 0 3px; transition: opacity 0.2s ease; min-height: 16px; }
+  .welcome-date { font-size: 10.5px; color: #7a7a7a; margin: 0 0 10px; transition: opacity 0.2s ease; }
+  .welcome-btn {
+    display: inline-block;
+    font-size: 11.5px; color: #BB86FC; font-weight: 600;
+    padding: 5px 14px; border: 1px solid #3a3a3a; border-radius: 8px;
+  }
+
+  .bubble {
+    position: relative;
+    max-width: 76%;
+    padding: 7px 11px;
+    border-radius: 13px;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+  .bubble.in { background: #FFFFFF; color: #1a1a1a; border-bottom-left-radius: 3px; }
+  .bubble.out { background: #BB86FC; color: #2a0a45; border-bottom-right-radius: 3px; }
+
+  .bubble.in::before {
+    content: ""; position: absolute; left: -6px; bottom: 0;
+    width: 10px; height: 12px; background: #FFFFFF;
+    clip-path: polygon(100% 0, 100% 100%, 0% 100%);
+  }
+  .bubble.out::before {
+    content: ""; position: absolute; right: -6px; bottom: 0;
+    width: 10px; height: 12px; background: #BB86FC;
+    clip-path: polygon(0 0, 100% 100%, 0% 100%);
+  }
+
+  .bubble-meta { display: flex; align-items: center; gap: 4px; justify-content: flex-end; margin-top: 3px; font-size: 10px; opacity: 0.75; }
+  .bubble-meta .ticks svg { display: block; }
+  .bubble-meta .ticks.sending { color: #8a8a8a; }
+  .bubble-meta .ticks.sent { color: #8a8a8a; }
+  .bubble-meta .ticks.delivered { color: #8a8a8a; }
+  .bubble-meta .ticks.read { color: #34B7F1; }
+
+  .demo-caption { font-size: 11.5px; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="wordmark">ZINDRYX</div>
+  <p class="tagline">Help, updates, and everything invite links do.</p>
+
+  <!-- Download / open app -->
+  <div class="section">
+    <h2>Get the app</h2>
+    <div class="btn-row">
+      <a class="btn-primary" id="playstore-btn" href="#">Get it on Google Play</a>
+      <button class="btn-secondary" id="open-app-btn">Open in Zindryx app</button>
+    </div>
+  </div>
+
+  <!-- What's New -->
+  <div class="section">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9L21 12l-6.6 3.1L12 22l-2.4-6.9L3 12l6.6-3.1z"/></svg>
+      What's new
+    </h2>
+
+    <div class="feature-row">
+      <div class="feature-text">
+        <p class="feature-title">Invite via link</p>
+        <p class="feature-desc">Share a group with one tap — set an expiry, choose whether new members see old messages.</p>
+      </div>
+      <button class="feature-btn" data-deeplink="zindryx://feature/invite_links">Try it</button>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-text">
+        <p class="feature-title">Locked groups</p>
+        <p class="feature-desc">Require admin approval before anyone new can join.</p>
+      </div>
+      <button class="feature-btn" data-deeplink="zindryx://feature/lock_group">Try it</button>
+    </div>
+
+    <!-- TODO: add more entries here as features ship, same pattern -->
+  </div>
+
+  <!-- See it in action -->
+  <div class="section">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4A8.5 8.5 0 0 1 3 12.6 8.38 8.38 0 0 1 11.5 4a8.5 8.5 0 0 1 9.5 7.5z"/></svg>
+      See it in action
+    </h2>
+    <p>Drag the bar below, swipe, or hold Shift and scroll to move between demos.</p>
+
+    <div class="demo-carousel">
+      <div class="demo-track" id="demo-track">
+
+        <!-- Slide 1: messaging -->
+        <div class="demo-slide" data-slide="messaging">
+          <p class="demo-slide-title">Messaging</p>
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <div class="phone-notch"></div>
+                <div class="status-icons">
+                  <svg width="14" height="10" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5"/><rect x="5" y="4" width="3" height="8"/><rect x="10" y="1" width="3" height="11"/></svg>
+                  <svg width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1" fill="currentColor" stroke="none"/></svg>
+                  <svg width="20" height="10" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="19" height="10" rx="2.5"/><rect x="21.5" y="4" width="1.5" height="4" fill="currentColor" stroke="none"/><rect x="3" y="3" width="15" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+                </div>
+              </div>
+              <div class="app-header">
+                <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,4 7,12 15,20"/></svg>
+                <div class="header-avatar"></div>
+                <div class="header-text">
+                  <div class="header-name">Amarachi</div>
+                  <div class="header-subtitle" id="demo-subtitle">last seen 3h ago</div>
+                </div>
+                <div class="header-icons">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                </div>
+              </div>
+              <div class="phone-chat-body">
+                <div class="demo-row in" id="row-in">
+                  <div class="bubble in">Hey, you free later?</div>
+                </div>
+                <div class="demo-row out" id="row-out">
+                  <div class="bubble out">
+                    Yeah, calling you now
+                    <div class="bubble-meta">
+                      <span class="ticks sent" id="demo-ticks">
+                        <svg width="14" height="10" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="1,6 4.5,9 11,1.5"/>
+                          <polyline points="5.5,6 9,9 15,1.5"/>
+                        </svg>
+                      </span>
+                      <span id="demo-time">3:49 PM</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="demo-slide-caption">Read receipts, typing indicators, and timestamps can each be turned off individually in Privacy settings.</p>
+        </div>
+
+        <!-- Slide 2: invite links -->
+        <div class="demo-slide" data-slide="invite">
+          <p class="demo-slide-title">Invite links</p>
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <div class="phone-notch"></div>
+                <div class="status-icons">
+                  <svg width="14" height="10" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5"/><rect x="5" y="4" width="3" height="8"/><rect x="10" y="1" width="3" height="11"/></svg>
+                  <svg width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1" fill="currentColor" stroke="none"/></svg>
+                  <svg width="20" height="10" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="19" height="10" rx="2.5"/><rect x="21.5" y="4" width="1.5" height="4" fill="currentColor" stroke="none"/><rect x="3" y="3" width="15" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+                </div>
+              </div>
+              <div class="app-header">
+                <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,4 7,12 15,20"/></svg>
+                <div class="header-avatar"></div>
+                <div class="header-text">
+                  <div class="header-name">Familia</div>
+                  <div class="header-subtitle">4 members</div>
+                </div>
+                <div class="header-icons">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                </div>
+              </div>
+              <div class="phone-chat-body">
+                <div class="sys-card" id="invite-card">
+                  <div class="sys-card-row">
+                    <div class="sys-card-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BB86FC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></svg>
+                    </div>
+                    <div>
+                      <p class="sys-card-title">David shared an invite link</p>
+                      <p class="sys-card-sub" id="invite-sub">Expires in 3 days</p>
+                      <div class="sys-card-actions">
+                        <span class="sys-card-action" id="invite-copy-action">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#BB86FC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="invite-copy-icon"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                          <span id="invite-copy-label">Copy link</span>
+                        </span>
+                        <span class="sys-card-action">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#BB86FC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                          Open
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="demo-slide-caption">Every member sees the same card — tap Copy or Open right from the message, no need to reopen the invite screen.</p>
+        </div>
+
+        <!-- Slide 3: group welcomes -->
+        <div class="demo-slide" data-slide="welcome">
+          <p class="demo-slide-title">Group welcomes</p>
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <div class="phone-notch"></div>
+                <div class="status-icons">
+                  <svg width="14" height="10" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5"/><rect x="5" y="4" width="3" height="8"/><rect x="10" y="1" width="3" height="11"/></svg>
+                  <svg width="14" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1" fill="currentColor" stroke="none"/></svg>
+                  <svg width="20" height="10" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="19" height="10" rx="2.5"/><rect x="21.5" y="4" width="1.5" height="4" fill="currentColor" stroke="none"/><rect x="3" y="3" width="15" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+                </div>
+              </div>
+              <div class="app-header">
+                <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,4 7,12 15,20"/></svg>
+                <div class="header-avatar"></div>
+                <div class="header-text">
+                  <div class="header-name">Familia</div>
+                  <div class="header-subtitle">4 members</div>
+                </div>
+                <div class="header-icons">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                </div>
+              </div>
+              <div class="phone-chat-body">
+                <div class="welcome-card" id="welcome-card">
+                  <div class="welcome-avatar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#BB86FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </div>
+                  <p class="welcome-count">4 members</p>
+                  <p class="welcome-headline" id="welcome-headline">You created this group</p>
+                  <p class="welcome-date" id="welcome-date">5/9/2026</p>
+                  <span class="welcome-btn">Learn more</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="demo-slide-caption">Every member sees a card that adapts to how they were added — created, invited, or added by an admin.</p>
+        </div>
+
+      </div>
+
+      <div class="demo-scrollbar-wrap">
+        <div class="demo-scrollbar-track" id="demo-scrollbar-track">
+          <div class="demo-scrollbar-thumb" id="demo-scrollbar-thumb"></div>
+        </div>
+        <span class="demo-slide-count" id="demo-slide-count">1/3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- How invites work / documentation -->
+  <div class="section">
+    <h2>How invite links work</h2>
+
+    <details class="faq-item" open>
+      <summary>What does an invite link share?</summary>
+      <p>Only your group's name, photo, and member count are shown before joining — never message content, unless the group admin turns on message previews for that specific link.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Can I control what a new member sees?</summary>
+      <p>Yes. When generating a link from group info, you choose an expiry (up to 7 days by default, shorter if you like) and whether new joiners can see messages sent before they joined. Turning that off doesn't delete anything for existing members — it only hides history for the new person.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Where is my data stored?</summary>
+      <p>Messages and group data are stored on Firebase Google Firestore. Invite links are validated and joins are processed directly against Firestore's security rules — Zindryx doesn't run a separate server that touches your messages.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Can a link be canceled early?</summary>
+      <p>Yes — the group admin can revoke a link at any time from group info, even before it expires.</p>
+    </details>
+  </div>
+
+</div>
+
+<div class="footer">
+  Zindryx · <a href="#" id="app-link-footer">Open the app</a>
+  <div class="theme-row">
+    <button class="theme-btn" id="theme-light-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/><line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/></svg>
+      Light
+    </button>
+    <button class="theme-btn" id="theme-dark-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5a8.5 8.5 0 0 1-11-11 8.5 8.5 0 1 0 11 11z"/></svg>
+      Dark
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Opening in Zindryx…</div>
+
+<script>
+  // ============================================================
+  // THEME — same pattern as index.html: system default, manual
+  // override persisted to localStorage with an in-memory fallback.
+  // ============================================================
+  let memoryTheme = null;
+  function getStoredTheme() {
+    try { return localStorage.getItem("zindryx-theme"); } catch (e) { return memoryTheme; }
+  }
+  function setStoredTheme(value) {
+    try { localStorage.setItem("zindryx-theme", value); } catch (e) { memoryTheme = value; }
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.getElementById("theme-light-btn").classList.toggle("active", theme === "light");
+    document.getElementById("theme-dark-btn").classList.toggle("active", theme === "dark");
+    setStoredTheme(theme);
+  }
+  const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  applyTheme(getStoredTheme() || systemTheme);
+  document.getElementById("theme-light-btn").addEventListener("click", () => applyTheme("light"));
+  document.getElementById("theme-dark-btn").addEventListener("click", () => applyTheme("dark"));
+
+  // ============================================================
+  // Demo carousel — 3 phone-frame slides (messaging / invite links /
+  // group welcomes). Each slide's animation only runs while it's
+  // actually visible, driven by IntersectionObserver, so slides you
+  // haven't scrolled to don't burn cycles or fall out of sync.
+  // ============================================================
+  (function () {
+    const track = document.getElementById("demo-track");
+    const slides = Array.from(track.children);
+    const scrollbarTrack = document.getElementById("demo-scrollbar-track");
+    const scrollbarThumb = document.getElementById("demo-scrollbar-thumb");
+    const slideCount = document.getElementById("demo-slide-count");
+    const total = slides.length;
+
+    // ---- per-slide animation controllers ----
+    const controllers = {};
+
+    controllers.messaging = (function () {
+      const rowIn = document.getElementById("row-in");
+      const rowOut = document.getElementById("row-out");
+      const ticks = document.getElementById("demo-ticks");
+      const subtitle = document.getElementById("demo-subtitle");
+      const LAST_SEEN = "last seen 3h ago";
+      const TYPING_HTML = 'typing <span class="typing-dot-row"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
+      let timers = [];
+      let interval = null;
+      function setTicks(state) { ticks.className = "ticks " + state; }
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+      function run() {
+        clearTimers();
+        [rowIn, rowOut].forEach(r => r.classList.remove("show"));
+        subtitle.textContent = LAST_SEEN;
+        setTicks("sending");
+        timers.push(setTimeout(() => { subtitle.innerHTML = TYPING_HTML; }, 500));
+        timers.push(setTimeout(() => { subtitle.textContent = LAST_SEEN; rowIn.classList.add("show"); }, 2200));
+        timers.push(setTimeout(() => { rowOut.classList.add("show"); setTicks("sent"); }, 3200));
+        timers.push(setTimeout(() => setTicks("delivered"), 3700));
+        timers.push(setTimeout(() => setTicks("read"), 4400));
+      }
+      return {
+        start() { run(); interval = setInterval(run, 7000); },
+        stop() { clearTimers(); clearInterval(interval); }
+      };
+    })();
+
+    controllers.invite = (function () {
+      const card = document.getElementById("invite-card");
+      const sub = document.getElementById("invite-sub");
+      const copyIcon = document.getElementById("invite-copy-icon");
+      const copyLabel = document.getElementById("invite-copy-label");
+      let timers = [];
+      let interval = null;
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+      function resetCopy() {
+        copyLabel.textContent = "Copy link";
+        copyIcon.innerHTML = '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>';
+      }
+      function run() {
+        clearTimers();
+        card.classList.remove("show");
+        resetCopy();
+        sub.textContent = "Expires in 3 days";
+        timers.push(setTimeout(() => card.classList.add("show"), 400));
+        timers.push(setTimeout(() => {
+          copyLabel.textContent = "Copied";
+          copyIcon.innerHTML = '<polyline points="20,6 9,17 4,12"/>';
+        }, 3200));
+      }
+      return {
+        start() { run(); interval = setInterval(run, 7000); },
+        stop() { clearTimers(); clearInterval(interval); }
+      };
+    })();
+
+    controllers.welcome = (function () {
+      const card = document.getElementById("welcome-card");
+      const headline = document.getElementById("welcome-headline");
+      const date = document.getElementById("welcome-date");
+      const STEPS = [
+        { headline: "You created this group", date: "5/9/2026" },
+        { headline: "Amarachi was added by David", date: "5/9/2026" },
+        { headline: "Chidinma joined via invite link", date: "6/9/2026" },
+      ];
+      let timers = [];
+      let interval = null;
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+      function showStep(i) {
+        headline.style.opacity = 0;
+        date.style.opacity = 0;
+        timers.push(setTimeout(() => {
+          headline.textContent = STEPS[i].headline;
+          date.textContent = STEPS[i].date;
+          headline.style.opacity = 1;
+          date.style.opacity = 1;
+        }, 200));
+      }
+      function run() {
+        clearTimers();
+        card.classList.remove("show");
+        timers.push(setTimeout(() => { card.classList.add("show"); showStep(0); }, 300));
+        timers.push(setTimeout(() => showStep(1), 2600));
+        timers.push(setTimeout(() => showStep(2), 4900));
+      }
+      return {
+        start() { run(); interval = setInterval(run, 7200); },
+        stop() { clearTimers(); clearInterval(interval); }
+      };
+    })();
+
+    // Only the slide mostly in view runs its animation.
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const key = entry.target.dataset.slide;
+        const controller = controllers[key];
+        if (!controller) return;
+        if (entry.isIntersecting && entry.intersectionRatio > 0.6) controller.start();
+        else controller.stop();
+      });
+    }, { root: track, threshold: [0, 0.6, 1] });
+    slides.forEach(s => io.observe(s));
+
+    // ---- draggable scrollbar, synced both ways with track scroll ----
+    function updateThumb() {
+      const thumbWidth = 100 / total;
+      const progress = track.scrollLeft / (track.scrollWidth - track.clientWidth || 1);
+      scrollbarThumb.style.width = thumbWidth + "%";
+      scrollbarThumb.style.left = progress * (100 - thumbWidth) + "%";
+      const activeIndex = Math.round(track.scrollLeft / track.clientWidth);
+      slideCount.textContent = (Math.min(activeIndex + 1, total)) + "/" + total;
+    }
+    track.addEventListener("scroll", updateThumb);
+    window.addEventListener("resize", updateThumb);
+
+    let dragging = false;
+    function scrollToRatio(clientX) {
+      const rect = scrollbarTrack.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+      track.scrollLeft = ratio * (track.scrollWidth - track.clientWidth);
+    }
+    scrollbarThumb.addEventListener("mousedown", (e) => { dragging = true; e.preventDefault(); });
+    scrollbarTrack.addEventListener("mousedown", (e) => { dragging = true; scrollToRatio(e.clientX); });
+    window.addEventListener("mousemove", (e) => { if (dragging) scrollToRatio(e.clientX); });
+    window.addEventListener("mouseup", () => { dragging = false; });
+    scrollbarThumb.addEventListener("touchstart", (e) => { dragging = true; }, { passive: true });
+    scrollbarTrack.addEventListener("touchstart", (e) => { dragging = true; scrollToRatio(e.touches[0].clientX); });
+    window.addEventListener("touchmove", (e) => { if (dragging) scrollToRatio(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener("touchend", () => { dragging = false; });
+
+    // Hold Shift + scroll (or just scroll on trackpads that already send
+    // horizontal delta) to move between slides without needing to swipe.
+    track.addEventListener("wheel", (e) => {
+      if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        track.scrollLeft += (e.shiftKey ? e.deltaY : e.deltaX);
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    updateThumb();
+  })();
+
+
+  // ============================================================
+  // CONFIG — TODO: fill in once these exist
+  // ============================================================
+  // Stubbed as a search link since the Play Store listing isn't live yet —
+  // swap for the real "details?id=..." link once it's published.
+  const PLAY_STORE_URL = "https://play.google.com/store/search?q=zindryx&c=apps";
+  // Confirmed package name: com.zindryx.hxfhub.app
+  // TODO: APP_SCHEME_BASE is still a guess — waiting on the AndroidManifest
+  // intent-filter to confirm the real custom scheme (or switch to App Links).
+  const APP_SCHEME_BASE = "zindryx://";
+
+  document.getElementById("playstore-btn").href = PLAY_STORE_URL;
+
+  function tryDeepLink(link) {
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    window.location.href = link;
+    setTimeout(() => {
+      toast.classList.remove("show");
+      // If the app wasn't installed, the page is still here after this
+      // timeout — fall back to the store listing.
+      window.location.href = PLAY_STORE_URL;
+    }, 1500);
+  }
+
+  document.getElementById("open-app-btn").addEventListener("click", () => {
+    tryDeepLink(APP_SCHEME_BASE + "home");
+  });
+  document.getElementById("app-link-footer").addEventListener("click", (e) => {
+    e.preventDefault();
+    tryDeepLink(APP_SCHEME_BASE + "home");
+  });
+
+  document.querySelectorAll(".feature-btn").forEach(btn => {
+    btn.addEventListener("click", () => tryDeepLink(btn.dataset.deeplink));
+  });
+</script>
+
+</body>
+</html>
