@@ -486,6 +486,13 @@
       console.error("Invite lookup failed:", e.code, e.message);
       document.getElementById("invalid-title").textContent = "Couldn't load this invite";
       document.getElementById("invalid-reason").textContent = "Check your connection and try again.";
+      // TEMP DEBUG — remove once the underlying cause is confirmed fixed.
+      // Puts the raw error right on the page so it's readable on a phone
+      // with no computer/devtools access needed.
+      const debugEl = document.createElement("p");
+      debugEl.style.cssText = "font-size:11px;color:#e24b4a;margin-top:12px;word-break:break-all;";
+      debugEl.textContent = (e.code || "") + ": " + (e.message || e);
+      document.getElementById("invalid-reason").insertAdjacentElement("afterend", debugEl);
       show("invalid");
     }
   }
