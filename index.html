@@ -479,7 +479,11 @@
       document.getElementById("join-btn").onclick = () => joinGroup(user, groupRef, groupName);
 
     } catch (e) {
-      console.error(e);
+      // A missing collectionGroup index throws 'failed-precondition' with a
+      // direct "create this index" link inside e.message — logging the
+      // full error (not just console.error(e)) makes that link visible
+      // without needing devtools' object inspector.
+      console.error("Invite lookup failed:", e.code, e.message);
       document.getElementById("invalid-title").textContent = "Couldn't load this invite";
       document.getElementById("invalid-reason").textContent = "Check your connection and try again.";
       show("invalid");
