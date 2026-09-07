@@ -94,7 +94,11 @@
     letter-spacing: 0.02em;
     color: var(--accent);
     margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  .wordmark img { height: 28px; width: 28px; }
 
   .card {
     background: var(--surface);
@@ -222,7 +226,7 @@
 </head>
 <body>
 
-<div class="wordmark">ZINDRYX</div>
+<div class="wordmark"><img src="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png" alt="" aria-hidden="true">ZINDRYX</div>
 
 <div class="card">
 
@@ -531,6 +535,14 @@
       // Section 3 (no admin write, no touching anyone else's data).
       await runTransaction(db, async (tx) => {
         tx.update(groupRef, { members: arrayUnion(user.uid) });
+
+        // NEW — nothing tracked which link brought in which member before
+        // this. Powers the "N joined" stat on the invite-links management
+        // screen in the app.
+        tx.update(inviteDoc.ref, {
+          joinedCount: (inviteDoc.data.joinedCount || 0) + 1,
+          joinedUserIds: arrayUnion(user.uid),
+        });
 
         if (inviteDoc.data.showPreviousMessages === false) {
           const hideRef = doc(db, groupRef.path, "hide_prev", user.uid);
