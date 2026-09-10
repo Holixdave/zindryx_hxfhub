@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Call</title>
+<style>
+  :root {
+    --ink: #1b1f23;
+    --paper: #f6f5f2;
+    --line: #d8d5cf;
+    --live: #2f6d4f;
+    --live-bg: #e6f0ea;
+    --dead: #a23c3c;
+    --dead-bg: #f5e6e6;
+    --ring-bg: #fff4d6;
+    --ring: #8a6b1f;
+    --accent: #2b4c7e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 20px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.3rem; font-weight: 600; margin: 0 0 4px; }
+  .sub { color: #6b6b6b; font-size: 0.9rem; margin: 0 0 16px; }
+  .status {
+    display: inline-block; padding: 4px 10px; border-radius: 4px;
+    font-size: 0.85rem; font-weight: 600; margin-bottom: 16px;
+  }
+  .status.idle { background: #eee; color: #666; }
+  .status.live { background: var(--live-bg); color: var(--live); }
+  .status.dead { background: var(--dead-bg); color: var(--dead); }
+  .status.ring { background: var(--ring-bg); color: var(--ring); }
+  .panel {
+    border: 1px solid var(--line); border-radius: 6px; padding: 16px;
+    margin-bottom: 16px; background: white;
+  }
+  .panel h2 { font-size: 0.95rem; margin: 0 0 10px; font-weight: 600; }
+  video { width: 100%; background: #000; border-radius: 4px; margin-bottom: 8px; }
+  #localVideo { max-height: 140px; object-fit: cover; }
+  #remoteVideo { max-height: 260px; object-fit: cover; }
+  label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: #555; }
+  input[type=text] {
+    width: 100%; padding: 10px; border: 1px solid var(--line);
+    border-radius: 4px; font-size: 1rem; margin-bottom: 10px;
+  }
+  .row { display: flex; gap: 8px; }
+  .row button { flex: 1; }
+  button {
+    padding: 12px; border: none; border-radius: 4px; font-size: 0.95rem;
+    font-weight: 600; cursor: pointer; margin-bottom: 8px; width: 100%;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-danger { background: var(--dead); color: white; }
+  .btn-secondary { background: #eee; color: var(--ink); }
+  .btn-accept { background: var(--live); color: white; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .toggle-group { display: flex; gap: 8px; margin-bottom: 10px; }
+  .toggle-group button { margin-bottom: 0; background: #eee; color: var(--ink); }
+  .toggle-group button.active { background: var(--accent); color: white; }
+  .uid-box {
+    font-family: ui-monospace, monospace; font-size: 0.8rem;
+    background: #f0efe9; padding: 8px; border-radius: 4px;
+    margin-bottom: 10px; word-break: break-all;
+  }
+  .log {
+    font-family: ui-monospace, monospace; font-size: 0.75rem;
+    background: #101418; color: #9fd3a0; padding: 10px; border-radius: 4px;
+    max-height: 140px; overflow-y: auto; white-space: pre-wrap;
+  }
+  .hint { font-size: 0.8rem; color: #888; margin-top: -4px; margin-bottom: 10px; }
+  .incoming {
+    display: none; border: 2px solid var(--ring); background: var(--ring-bg);
+    border-radius: 6px; padding: 14px; margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Web Call</h1>
+<p class="sub">Calls into the real app's Firestore/FCM signaling.</p>
+<span id="statusBadge" class="status idle">Not connected</span>
+
+<div id="incomingBox" class="incoming">
+  <div id="incomingText" style="margin-bottom:10px;font-weight:600"></div>
+  <div class="row">
+    <button class="btn-accept" id="acceptBtn">Accept</button>
+    <button class="btn-danger" id="declineBtn">Decline</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>My web identity (for phone → PC calls)</h2>
+  <div class="uid-box" id="myUid">signing in...</div>
+  <p class="hint">If you want the app to be able to call this page, a user doc at <code>users/&lt;this uid&gt;</code> needs to exist in Firestore so it shows up as a callable contact. Otherwise this page still auto-answers if a call doc targets this uid directly.</p>
+</div>
+
+<div class="panel">
+  <h2>Call the phone</h2>
+  <label for="receiverIdInput">Receiver's Firestore uid (the app user to ring)</label>
+  <input type="text" id="receiverIdInput" placeholder="the app user's uid">
+  <div class="toggle-group">
+    <button id="voiceToggle" class="active" data-type="voice">Voice</button>
+    <button id="videoToggle" data-type="video">Video</button>
+  </div>
+  <button id="callBtn" class="btn-primary">Call phone</button>
+</div>
+
+<div class="panel">
+  <h2>Video</h2>
+  <video id="localVideo" autoplay playsinline muted></video>
+  <video id="remoteVideo" autoplay playsinline></video>
+  <button id="hangupBtn" class="btn-danger" disabled>Hang up</button>
+</div>
+
+<div class="panel">
+  <h2>Log</h2>
+  <div id="log" class="log"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ============================================================
+// PASTE YOUR FIREBASE CONFIG HERE — must be the SAME Firebase
+// project the phone app uses, or none of this lines up.
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyCNSBIH65aJRhW9g90nKU58xd2HsvUnIEo",
+  authDomain: "my-jamb-app.firebaseapp.com",
+  databaseURL: "https://my-jamb-app-default-rtdb.firebaseio.com",
+  projectId: "my-jamb-app",
+  storageBucket: "my-jamb-app.firebasestorage.app",
+  messagingSenderId: "317049651307",
+  appId: "1:317049651307:web:0bf600cf4435a10a2c712e",
+  measurementId: "G-EWP28WNN98"
+};
+// Your notifier server — already filled in from your config file.
+const NOTIFIER_BASE_URL = "https://notifier.chadivavirtuals.name.ng";
+// ============================================================
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const servers = {
+  iceServers: [
+    { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"] }
+  ],
+  iceCandidatePoolSize: 10,
+};
+
+let pc = null;
+let localStream = null;
+let remoteStream = null;
+let activeCallId = null;
+let myUid = null;
+let incomingCallDoc = null;
+let statusUnsub = null;
+let candidatesUnsub = null;
+let incomingListenerUnsub = null;
+
+const localVideo = document.getElementById("localVideo");
+const remoteVideo = document.getElementById("remoteVideo");
+const callBtn = document.getElementById("callBtn");
+const hangupBtn = document.getElementById("hangupBtn");
+const receiverIdInput = document.getElementById("receiverIdInput");
+const logEl = document.getElementById("log");
+const statusBadge = document.getElementById("statusBadge");
+const myUidEl = document.getElementById("myUid");
+const voiceToggle = document.getElementById("voiceToggle");
+const videoToggle = document.getElementById("videoToggle");
+const incomingBox = document.getElementById("incomingBox");
+const incomingText = document.getElementById("incomingText");
+const acceptBtn = document.getElementById("acceptBtn");
+const declineBtn = document.getElementById("declineBtn");
+
+let callType = "voice";
+voiceToggle.addEventListener("click", () => setCallType("voice"));
+videoToggle.addEventListener("click", () => setCallType("video"));
+function setCallType(t) {
+  callType = t;
+  voiceToggle.classList.toggle("active", t === "voice");
+  videoToggle.classList.toggle("active", t === "video");
+}
+
+function log(msg) {
+  const t = new Date().toLocaleTimeString();
+  logEl.textContent += `[${t}] ${msg}\n`;
+  logEl.scrollTop = logEl.scrollHeight;
+  console.log(msg);
+}
+
+function setStatus(state, text) {
+  statusBadge.className = "status " + state;
+  statusBadge.textContent = text;
+}
+
+// ── Sign in anonymously so Firestore writes have request.auth != null ──────
+auth.signInAnonymously().catch((e) => {
+  log("Anonymous auth failed: " + e.message + " — enable Anonymous sign-in in Firebase Auth if your Firestore rules require request.auth.");
+});
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    myUid = user.uid;
+    myUidEl.textContent = myUid;
+    log("Signed in as " + myUid);
+    listenForIncomingCalls();
+  }
+});
+
+async function initLocalStream(type) {
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({
+      video: type === "video",
+      audio: true,
+    });
+  } catch (e) {
+    log("getUserMedia failed, retrying audio-only: " + e.message);
+    localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+  }
+  localVideo.srcObject = localStream;
+  remoteStream = new MediaStream();
+  remoteVideo.srcObject = remoteStream;
+}
+
+function createPeerConnection(callId) {
+  pc = new RTCPeerConnection(servers);
+  localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+
+  pc.ontrack = (event) => {
+    event.streams[0].getTracks().forEach((track) => remoteStream.addTrack(track));
+    log("Remote track received.");
+  };
+
+  pc.onicecandidate = (event) => {
+    if (!event.candidate) return;
+    db.collection("calls").doc(callId).collection("candidates").add({
+      candidate: event.candidate.candidate,
+      sdpMid: event.candidate.sdpMid,
+      sdpMLineIndex: event.candidate.sdpMLineIndex,
+      userId: myUid,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  };
+
+  pc.onconnectionstatechange = () => {
+    log("Connection state: " + pc.connectionState);
+    if (pc.connectionState === "connected") {
+      setStatus("live", "Call connected");
+    } else if (["disconnected", "failed", "closed"].includes(pc.connectionState)) {
+      setStatus("dead", "Call ended");
+    }
+  };
+
+  hangupBtn.disabled = false;
+}
+
+function listenForCandidates(callId) {
+  candidatesUnsub = db.collection("calls").doc(callId).collection("candidates")
+    .onSnapshot((snap) => {
+      snap.docChanges().forEach((change) => {
+        if (change.type !== "added") return;
+        const d = change.doc.data();
+        if (d.userId === myUid) return; // skip our own
+        pc.addIceCandidate(new RTCIceCandidate({
+          candidate: d.candidate, sdpMid: d.sdpMid, sdpMLineIndex: d.sdpMLineIndex,
+        })).catch((e) => log("addIceCandidate error: " + e.message));
+      });
+    });
+}
+
+// ── Outgoing: web calls the phone ───────────────────────────────────────────
+async function callPhone() {
+  const receiverId = receiverIdInput.value.trim();
+  if (!receiverId) { alert("Enter the receiver's Firestore uid."); return; }
+  callBtn.disabled = true;
+
+  await initLocalStream(callType);
+
+  const receiverDoc = await db.collection("users").doc(receiverId).get();
+  const receiverToken = receiverDoc.data()?.fcmToken || "";
+  if (!receiverToken) log("Warning: no fcmToken found on users/" + receiverId + " — push notification will be skipped, phone won't ring unless app is foregrounded and listening.");
+
+  const callRef = db.collection("calls").doc();
+  const callId = callRef.id;
+  activeCallId = callId;
+
+  createPeerConnection(callId);
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+
+  await callRef.set({
+    callId: callId,
+    callerId: myUid,
+    callerName: "Web Caller",
+    callerPhoto: "",
+    receiverId: receiverId,
+    type: callType,
+    isGroup: false,
+    status: "ringing",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    offer: { sdp: offer.sdp, type: offer.type },
+  });
+
+  log("Call doc created: " + callId);
+  setStatus("ring", "Ringing...");
+
+  if (receiverToken) {
+    try {
+      const res = await fetch(NOTIFIER_BASE_URL + "/send-call", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: receiverToken, callId: callId, callerName: "Web Caller",
+          callerPhoto: "", type: callType, isGroup: false,
+        }),
+      });
+      log("Notifier response: " + res.status);
+    } catch (e) {
+      log("Notifier request failed (likely CORS — check your server allows this origin): " + e.message);
+    }
+  }
+
+  listenForCandidates(callId);
+
+  statusUnsub = callRef.onSnapshot((snap) => {
+    const d = snap.data();
+    if (!d) return;
+    if (!pc.currentRemoteDescription && d.answer) {
+      log("Answer received, connecting...");
+      pc.setRemoteDescription(new RTCSessionDescription(d.answer));
+    }
+    if (d.status === "active") setStatus("live", "Call connected");
+    if (["ended", "rejected", "missed"].includes(d.status)) {
+      log("Call ended by other side: " + d.status);
+      teardown();
+    }
+  });
+}
+
+// ── Incoming: phone calls the web page ──────────────────────────────────────
+function listenForIncomingCalls() {
+  incomingListenerUnsub = db.collection("calls")
+    .where("receiverId", "==", myUid)
+    .where("status", "==", "ringing")
+    .onSnapshot((snap) => {
+      snap.docChanges().forEach((change) => {
+        if (change.type !== "added") return;
+        const d = change.doc.data();
+        incomingCallDoc = { id: change.doc.id, ...d };
+        incomingText.textContent = (d.callerName || "Unknown") + " is calling (" + d.type + ")";
+        incomingBox.style.display = "block";
+        setStatus("ring", "Incoming call");
+        log("Incoming call: " + change.doc.id);
+      });
+    });
+}
+
+acceptBtn.addEventListener("click", async () => {
+  if (!incomingCallDoc) return;
+  incomingBox.style.display = "none";
+  callBtn.disabled = true;
+
+  const call = incomingCallDoc;
+  activeCallId = call.id;
+  await initLocalStream(call.type);
+  createPeerConnection(call.id);
+
+  await pc.setRemoteDescription(new RTCSessionDescription(call.offer));
+  const answer = await pc.createAnswer();
+  await pc.setLocalDescription(answer);
+
+  const callRef = db.collection("calls").doc(call.id);
+  await callRef.update({
+    answer: { sdp: answer.sdp, type: answer.type },
+    status: "active",
+  });
+
+  listenForCandidates(call.id);
+  statusUnsub = callRef.onSnapshot((snap) => {
+    const d = snap.data();
+    if (d && ["ended", "rejected", "missed"].includes(d.status)) {
+      log("Call ended by other side: " + d.status);
+      teardown();
+    }
+  });
+
+  setStatus("live", "Call connected");
+  log("Accepted call " + call.id);
+});
+
+declineBtn.addEventListener("click", async () => {
+  if (!incomingCallDoc) return;
+  await db.collection("calls").doc(incomingCallDoc.id).update({ status: "rejected" });
+  incomingBox.style.display = "none";
+  incomingCallDoc = null;
+  setStatus("idle", "Not connected");
+});
+
+async function teardown() {
+  if (statusUnsub) { statusUnsub(); statusUnsub = null; }
+  if (candidatesUnsub) { candidatesUnsub(); candidatesUnsub = null; }
+  if (pc) { pc.close(); pc = null; }
+  if (localStream) { localStream.getTracks().forEach((t) => t.stop()); localStream = null; }
+  localVideo.srcObject = null;
+  remoteVideo.srcObject = null;
+  hangupBtn.disabled = true;
+  callBtn.disabled = false;
+  activeCallId = null;
+}
+
+hangupBtn.addEventListener("click", async () => {
+  if (activeCallId) {
+    await db.collection("calls").doc(activeCallId).update({
+      status: "ended",
+      endedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(() => {});
+  }
+  await teardown();
+  setStatus("dead", "Ended");
+  log("Hung up.");
+});
+
+callBtn.addEventListener("click", callPhone);
+</script>
+</body>
+</html>
