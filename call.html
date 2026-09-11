@@ -153,7 +153,28 @@ const db = firebase.firestore();
 
 const servers = {
   iceServers: [
-    { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"] }
+    { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"] },
+    { urls: "stun:stun.relay.metered.ca:80" },
+    {
+      urls: "turn:global.relay.metered.ca:80",
+      username: "961a50f3582eb065fa5b0a7f",
+      credential: "TfFcQY8eUSWbhzsI",
+    },
+    {
+      urls: "turn:global.relay.metered.ca:80?transport=tcp",
+      username: "961a50f3582eb065fa5b0a7f",
+      credential: "TfFcQY8eUSWbhzsI",
+    },
+    {
+      urls: "turn:global.relay.metered.ca:443",
+      username: "961a50f3582eb065fa5b0a7f",
+      credential: "TfFcQY8eUSWbhzsI",
+    },
+    {
+      urls: "turns:global.relay.metered.ca:443?transport=tcp",
+      username: "961a50f3582eb065fa5b0a7f",
+      credential: "TfFcQY8eUSWbhzsI",
+    },
   ],
   iceCandidatePoolSize: 10,
 };
