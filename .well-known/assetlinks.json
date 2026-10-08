@@ -1,0 +1,26 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.zindryx.hxfhub",
+      "sha256_cert_fingerprints": [
+        // REPLACE WITH NORMAL APP'S SHA-256 FINGERPRINT (e.g., "AA:BB:CC:...")
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.zindryx.hxfhub.lite",
+      "sha256_cert_fingerprints": [
+        // REPLACE WITH LITE APP'S SHA-256 FINGERPRINT (e.g., "11:22:33:...")
+      ]
+    }
+  }
+      ]
