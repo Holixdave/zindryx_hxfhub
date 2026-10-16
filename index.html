@@ -3,15 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join a group — Zindryx</title>
+<title>Zindryx: Join a group</title>
+<meta name="description" content="Zindryx brings AI study help, CBT practice and campus group chats into one app. Got an invite code? Join your group here.">
+<meta name="theme-color" content="#BB86FC">
 
+<!-- Site icon: browser tab, bookmarks, home-screen shortcuts and link previews all use these -->
 <link rel="icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
+<link rel="shortcut icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
 <link rel="apple-touch-icon" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
-<meta property="og:title" content="Join a group — Zindryx">
+<meta property="og:site_name" content="Zindryx">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://linking.chadivavirtuals.name.ng/">
+<meta property="og:title" content="Zindryx: Join a group">
 <meta property="og:description" content="You've been invited to join a group on Zindryx.">
 <meta property="og:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Join a group — Zindryx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zindryx: Join a group">
 <meta name="twitter:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
 <script>
   // Runs before paint so there's no flash of the wrong theme.
@@ -222,11 +229,114 @@
     cursor: pointer;
   }
   .theme-btn.active { background: var(--accent); color: var(--accent-strong); border-color: transparent; }
+
+  /* ---------- Landing (shown when there is no code) ---------- */
+  .landing { max-width: 440px; width: 100%; }
+  .landing h1 { font-size: 26px; line-height: 1.25; margin: 0 0 10px; text-align: left; }
+  .landing .lead { font-size: 15px; line-height: 1.65; color: var(--text-secondary); margin: 0 0 20px; }
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
+  }
+  .panel h2 { font-family: var(--font-head); font-size: 14px; font-weight: 600; margin: 0 0 4px; }
+  .panel p { font-size: 13px; line-height: 1.55; color: var(--text-secondary); margin: 0 0 12px; }
+  .btn-link {
+    display: block; width: 100%; padding: 13px; border-radius: 10px; text-align: center;
+    font-family: var(--font-head); font-size: 14.5px; font-weight: 600; text-decoration: none;
+    background: var(--accent); color: var(--accent-strong); border: none; cursor: pointer;
+  }
+  .btn-link.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); margin-top: 10px; }
+  .code-row { display: flex; gap: 8px; }
+  .code-row input {
+    flex: 1; min-width: 0; padding: 11px 13px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+    font-family: var(--font-body); font-size: 15px; letter-spacing: 0.04em;
+  }
+  .code-row input:focus { outline: none; border-color: var(--accent); }
+  .code-row button { width: auto; padding: 0 18px; }
+  .feature-grid { display: grid; gap: 10px; margin: 6px 0 4px; }
+  .feature-grid .panel { margin: 0; display: flex; gap: 12px; align-items: flex-start; }
+  .feature-grid .ico {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feature-grid h2 { margin: 0 0 2px; }
+  .feature-grid p { margin: 0; font-size: 12.5px; }
+
+  /* ---------- Bottom sheet ---------- */
+  .sheet-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 50;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 51;
+    max-width: 480px; margin: 0 auto;
+    background: var(--surface); border: 1px solid var(--border); border-bottom: none;
+    border-radius: 20px 20px 0 0; padding: 10px 22px 26px;
+    transform: translateY(105%); transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
+  }
+  .sheet.open { transform: translateY(0); }
+  .sheet .grab { width: 38px; height: 4px; border-radius: 2px; background: var(--border); margin: 0 auto 16px; }
+  .sheet h2 { font-family: var(--font-head); font-size: 17px; font-weight: 600; margin: 0 0 6px; }
+  .sheet p { font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin: 0 0 18px; }
+  .sheet .sheet-ico {
+    width: 44px; height: 44px; border-radius: 12px; margin-bottom: 12px;
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  @media (prefers-reduced-motion: reduce) { .sheet, .sheet-backdrop { transition: none; } }
 </style>
 </head>
 <body>
 
 <div class="wordmark"><img src="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png" alt="" aria-hidden="true">ZINDRYX</div>
+
+
+<!-- Landing: what people see when they open the site with no invite code -->
+<main class="landing hidden" id="landing">
+  <h1>Study smarter.<br>Chat with your campus.</h1>
+  <p class="lead">Zindryx brings AI study help, CBT practice and group chats into one app. Got an invite code? Join your group below.</p>
+
+  <div class="panel">
+    <h2>Have an invite code?</h2>
+    <p>Paste the code or the full invite link.</p>
+    <form class="code-row" id="code-form" autocomplete="off">
+      <input id="code-input" type="text" inputmode="text" autocapitalize="off" spellcheck="false" placeholder="e.g. k3f9x2a" aria-label="Invite code">
+      <button type="submit">Join</button>
+    </form>
+    <p class="error-text hidden" id="code-error" style="margin:10px 0 0;"></p>
+  </div>
+
+  <a class="btn-link" href="/zindryx_join">Download Zindryx</a>
+  <a class="btn-link secondary" href="#" id="open-app-landing">Open in app</a>
+
+  <div class="feature-grid" style="margin-top:18px;">
+    <div class="panel">
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9L21 12l-6.6 3.1L12 22l-2.4-6.9L3 12l6.6-3.1z"/></svg></div>
+      <div><h2>AI that helps you study</h2><p>Ask questions, get explanations and build understanding faster.</p></div>
+    </div>
+    <div class="panel">
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><polyline points="8,9 10,11 14,7"/><line x1="8" y1="16" x2="16" y2="16"/></svg></div>
+      <div><h2>CBT practice</h2><p>Practise exam-style questions and track how you improve.</p></div>
+    </div>
+    <div class="panel">
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4A8.5 8.5 0 0 1 3 12.6 8.4 8.4 0 0 1 11.5 4a8.5 8.5 0 0 1 9.5 7.5z"/></svg></div>
+      <div><h2>Campus group chats</h2><p>Join groups with a single invite link. No sign-up friction.</p></div>
+    </div>
+  </div>
+</main>
+
+<!-- Bottom sheet -->
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" aria-hidden="true">
+  <div class="grab"></div>
+  <div class="sheet-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12.5"/><circle cx="12" cy="16" r="0.6" fill="currentColor"/></svg></div>
+  <h2 id="sheet-title">No code detected</h2>
+  <p id="sheet-text">This page expected an invite code, but the link didn't include one. Paste a code below, or ask the group admin to send the link again.</p>
+  <button id="sheet-ok">Enter a code</button>
+</div>
 
 <div class="card">
 
@@ -243,7 +353,7 @@
         <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/></svg>
       </div>
     </div>
-    <p class="muted" style="margin-top:16px;">Checking invite…</p>
+    <p class="muted" style="margin:16px 0 0;">Checking invite…</p>
   </div>
 
   <!-- Invalid / expired -->
@@ -251,9 +361,11 @@
     <div class="icon-x">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
     </div>
-    <h1 id="invalid-title">This link isn't valid</h1>
-    <p class="sub" id="invalid-reason">It may have expired or already been used.</p>
-    <p class="muted">Ask the group admin for a new invite.</p>
+    <h1 id="invalid-title">Invalid code</h1>
+    <p class="sub" id="invalid-reason">We couldn't find an invite with this code.</p>
+    <p class="muted" id="invalid-hint">Check the code and try again.</p>
+    <button id="retry-btn" class="hidden">Try again</button>
+    <button id="another-btn" class="secondary">Enter another code</button>
   </div>
 
   <!-- Sign-in required -->
@@ -303,14 +415,14 @@
     <h1 id="success-title">You joined the group</h1>
     <p class="sub">You've been added to the member list.</p>
     <button id="open-app-btn">Open group chat</button>
-    <button id="open-web-btn" class="secondary">Continue in browser</button>
+    <button id="open-web-btn" class="secondary">Learn more</button>
   </div>
 
 </div>
 
 <div class="footer">
   Messages are stored on Firebase Google Firestore.<br>
-  <a href="#" id="learn-more-link">Learn more</a> about how Zindryx handles invites.
+  <a href="#" id="learn-more-link">Learn more</a> about how Zindryx handles invites.<br><a href="/zindryx_join">Download the app</a>
   <div class="theme-row">
     <button class="theme-btn" id="theme-light-btn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/><line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/></svg>
@@ -348,16 +460,6 @@
 </script>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import {
-    getFirestore, collectionGroup, collection, query, where, limit, getDocs, getDoc,
-    doc, runTransaction, arrayUnion, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-  import {
-    getAuth, onAuthStateChanged, signInWithEmailAndPassword,
-    signInWithPopup, GoogleAuthProvider
-  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-
   // ============================================================
   // CONFIG — TODO: paste your real Firebase client config here.
   // This object is safe to expose publicly (it's an identifier,
@@ -374,28 +476,101 @@
     appId: "1:317049651307:web:0bf600cf4435a10a2c712e"
   };
 
-  // TODO: still unconfirmed — you're pasting the AndroidManifest next,
-  // this scheme should match whatever intent-filter is actually declared there
-  const APP_SCHEME = "zindryx://join/";
-  const DOCS_URL = "https://linking.chadivavirtuals.name.ng/docs";
+  const PKG = "com.zindryx.hxfhub";
+  const SITE = "https://linking.chadivavirtuals.name.ng";
+  const DOWNLOAD_URL = SITE + "/zindryx_join";
+  const DOCS_URL = SITE + "/docs";
+  // Codes made by the app are 7 chars, a-z and 0-9. Anything else can't exist, so
+  // we call it invalid without bothering Firestore.
+  const CODE_PATTERN = /^[a-z0-9]{7}$/;
+  const DEBUG = new URLSearchParams(location.search).has("debug");
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+  // Firebase loads only when there's a code to check, so the landing page and the
+  // "No code detected" sheet work even if the Firebase CDN is slow or blocked.
+  const FB = "https://www.gstatic.com/firebasejs/10.13.0/";
+  let db, auth, collectionGroup, collection, query, where, limit, getDocs, getDoc, doc,
+      runTransaction, arrayUnion, serverTimestamp, onAuthStateChanged,
+      signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider;
+  async function initFirebase() {
+    const [a, f, au] = await Promise.all([
+      import(FB + "firebase-app.js"), import(FB + "firebase-firestore.js"), import(FB + "firebase-auth.js")
+    ]);
+    ({ collectionGroup, collection, query, where, limit, getDocs, getDoc, doc,
+       runTransaction, arrayUnion, serverTimestamp } = f);
+    ({ onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } = au);
+    const app = a.initializeApp(firebaseConfig);
+    db = f.getFirestore(app);
+    auth = au.getAuth(app);
+  }
 
-  document.getElementById("learn-more-link").href = DOCS_URL;
+  const $ = (id) => document.getElementById(id);
+  $("learn-more-link").href = DOCS_URL;
 
   const views = ["loading", "invalid", "signin", "join", "success"];
   function show(name) {
-    views.forEach(v => document.getElementById("view-" + v).classList.toggle("hidden", v !== name));
+    const landing = name === "landing";
+    $("landing").classList.toggle("hidden", !landing);
+    document.querySelector(".card").classList.toggle("hidden", landing);
+    views.forEach(v => $("view-" + v).classList.toggle("hidden", v !== name));
   }
 
-  function getCode() {
-    const pathParts = window.location.pathname.split("/").filter(Boolean);
-    const fromPath = pathParts[pathParts.length - 1];
-    const params = new URLSearchParams(window.location.search);
-    return params.get("code") || (fromPath && fromPath !== "index.html" ? fromPath : null);
+  // ---------- open the app (Android intent, falls back to the download page) ----------
+  function openApp() {
+    if (/android/i.test(navigator.userAgent)) {
+      const fb = encodeURIComponent(DOWNLOAD_URL);
+      location.href = "intent://linking.chadivavirtuals.name.ng/#Intent;scheme=https;package=" + PKG +
+        ";S.browser_fallback_url=" + fb + ";end";
+    } else {
+      location.href = DOWNLOAD_URL;
+    }
   }
+  $("open-app-landing").addEventListener("click", (e) => { e.preventDefault(); openApp(); });
+
+  // ---------- bottom sheet ----------
+  function openSheet(title, text, btnLabel) {
+    $("sheet-title").textContent = title;
+    $("sheet-text").textContent = text;
+    $("sheet-ok").textContent = btnLabel;
+    $("sheet").classList.add("open");
+    $("sheet-backdrop").classList.add("open");
+    $("sheet").setAttribute("aria-hidden", "false");
+  }
+  function closeSheet() {
+    $("sheet").classList.remove("open");
+    $("sheet-backdrop").classList.remove("open");
+    $("sheet").setAttribute("aria-hidden", "true");
+    $("code-input").focus({ preventScroll: true });
+  }
+  $("sheet-ok").addEventListener("click", closeSheet);
+  $("sheet-backdrop").addEventListener("click", closeSheet);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+
+  // ---------- code helpers ----------
+  // Accepts a bare code or a pasted full link (?code=xxxx).
+  function normalizeCode(raw) {
+    let c = (raw || "").trim();
+    try { const u = new URL(c); c = u.searchParams.get("code") || c; } catch (e) {}
+    return c.trim().toLowerCase();
+  }
+  function getCode() {
+    const params = new URLSearchParams(window.location.search);
+    return normalizeCode(params.get("code"));
+  }
+  function goToCode(raw) {
+    const c = normalizeCode(raw);
+    if (!c) return "Enter your invite code.";
+    if (!CODE_PATTERN.test(c)) return "That doesn't look like a valid code. Codes are 7 letters or numbers.";
+    location.href = "/?code=" + encodeURIComponent(c);
+    return null;
+  }
+  $("code-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const err = goToCode($("code-input").value);
+    const el = $("code-error");
+    el.textContent = err || "";
+    el.classList.toggle("hidden", !err);
+  });
+  $("another-btn").addEventListener("click", () => { location.href = "/"; });
 
   function formatExpiry(expiresAt) {
     if (!expiresAt) return "";
@@ -409,98 +584,117 @@
     return "Expires in " + days + " day" + (days === 1 ? "" : "s");
   }
 
-  const code = getCode();
-  if (!code) {
-    document.getElementById("invalid-title").textContent = "No invite code found";
-    document.getElementById("invalid-reason").textContent = "Check the link and try again.";
+  // One place for every failure screen, so the wording stays consistent:
+  //   invalid  = no such code      expired = past expiry
+  //   revoked  = admin cancelled   error   = we couldn't check (network / config)
+  function showProblem(kind, detail) {
+    const copy = {
+      invalid: ["Invalid code", "We couldn't find an invite with this code.", "Check the code and try again."],
+      expired: ["Invite expired", "This invite link has expired.", "Ask the group admin for a new link."],
+      revoked: ["Invite revoked", "The group admin cancelled this invite link.", "Ask the group admin for a new link."],
+      error:   ["Couldn't check this invite", "Something went wrong while checking the code.", "Check your connection and try again."],
+    }[kind];
+    $("invalid-title").textContent = copy[0];
+    $("invalid-reason").textContent = copy[1];
+    $("invalid-hint").textContent = copy[2];
+    $("retry-btn").classList.toggle("hidden", kind !== "error");
+    const old = $("debug-line"); if (old) old.remove();
+    if (DEBUG && detail) {
+      const p = document.createElement("p");
+      p.id = "debug-line";
+      p.style.cssText = "font-size:11px;color:var(--danger);margin:12px 0 0;word-break:break-all;";
+      p.textContent = detail;
+      $("invalid-hint").insertAdjacentElement("afterend", p);
+    }
     show("invalid");
-  } else {
-    onAuthStateChanged(auth, (user) => {
-      loadInvite(user);
-    });
   }
+  $("retry-btn").addEventListener("click", () => location.reload());
 
-  let inviteDoc = null; // holds { ref, data, groupRef }
+  // ---------- boot ----------
+  const code = getCode();
+  let inviteDoc = null; // { ref, data, groupRef }
+
+  if (!code) {
+    // No code in the URL: show the normal landing page and a sheet explaining why.
+    console.warn("No code detected. Expected a code, e.g. " + SITE + "/?code=abc1234");
+    show("landing");
+    openSheet(
+      "No code detected",
+      "This page expected an invite code, but the link didn't include one. Paste a code below, or ask the group admin to send the link again.",
+      "Enter a code"
+    );
+  } else if (!CODE_PATTERN.test(code)) {
+    console.warn("Invalid code format:", code);
+    showProblem("invalid");
+  } else {
+    show("loading");
+    initFirebase()
+      .then(() => onAuthStateChanged(auth, (user) => { loadInvite(user); }))
+      .catch((e) => { console.error("Firebase failed to load:", e); showProblem("error", String(e)); });
+  }
 
   async function loadInvite(user) {
     try {
-      // Invite docs live at group_chats/{groupId}/invites/{code}. Since the
-      // join page only has the code (not the groupId), this does a
-      // collectionGroup query matched against the 'code' field — the doc
-      // also stores 'code' redundantly for exactly this lookup.
+      // Invite docs live at group_chats/{groupId}/invites/{code} and also store
+      // `code`, so a collection-group query finds them without knowing the group.
       const q = query(collectionGroup(db, "invites"), where("code", "==", code), limit(1));
       const snap = await getDocs(q);
 
-      if (snap.empty) {
-        document.getElementById("invalid-reason").textContent = "This invite link is no longer active.";
-        show("invalid");
-        return;
-      }
+      if (snap.empty) { showProblem("invalid"); return; }
 
       const inviteSnap = snap.docs[0];
       const invite = inviteSnap.data();
-      const groupRef = inviteSnap.ref.parent.parent; // group_chats/{groupId}
+      const groupRef = inviteSnap.ref.parent.parent;
       inviteDoc = { ref: inviteSnap.ref, data: invite, groupRef };
 
-      const expired = invite.expiresAt && invite.expiresAt.toDate() < new Date();
-      if (invite.revoked || expired) {
-        document.getElementById("invalid-reason").textContent = expired
-          ? "This invite link has expired."
-          : "This invite link was revoked.";
-        show("invalid");
-        return;
-      }
+      // Same rule the app uses: revoked, or expiresAt in the past.
+      if (invite.revoked) { showProblem("revoked"); return; }
+      if (invite.expiresAt && invite.expiresAt.toDate() < new Date()) { showProblem("expired"); return; }
 
       const groupSnap = await getDoc(groupRef);
       const group = groupSnap.data() || {};
-
       const groupName = group.groupName || "this group";
       const memberCount = (group.members || []).length;
       const groupPhoto = group.groupPhoto || "";
+      const countText = memberCount + (memberCount === 1 ? " member" : " members");
+
+      const setPhoto = (id) => {
+        if (!groupPhoto) return;
+        const img = document.createElement("img");
+        img.alt = ""; img.src = groupPhoto;
+        $(id).replaceChildren(img);
+      };
 
       if (!user) {
-        document.getElementById("signin-group-name").textContent = "Join " + groupName;
-        document.getElementById("signin-line").textContent = memberCount + " members";
-        if (groupPhoto) document.getElementById("signin-avatar").innerHTML = `<img src="${groupPhoto}" alt="">`;
-        document.getElementById("signin-google-btn").onclick = () => {
-          signInWithPopup(auth, new GoogleAuthProvider());
-        };
-        document.getElementById("signin-email-btn").onclick = () => doEmailLogin();
+        $("signin-group-name").textContent = "Join " + groupName;
+        $("signin-line").textContent = countText;
+        setPhoto("signin-avatar");
+        $("signin-google-btn").onclick = () => { signInWithPopup(auth, new GoogleAuthProvider()).catch((e) => console.warn("Google sign-in:", e.code)); };
+        $("signin-email-btn").onclick = () => doEmailLogin();
         show("signin");
         return;
       }
 
-      document.getElementById("group-name").textContent = "Join " + groupName;
-      document.getElementById("inviter-line").textContent = memberCount + " members";
-      document.getElementById("expiry-line").textContent = formatExpiry(invite.expiresAt);
-      if (groupPhoto) document.getElementById("group-avatar").innerHTML = `<img src="${groupPhoto}" alt="">`;
-
+      $("group-name").textContent = "Join " + groupName;
+      $("inviter-line").textContent = countText;
+      $("expiry-line").textContent = formatExpiry(invite.expiresAt);
+      setPhoto("group-avatar");
       show("join");
-      document.getElementById("join-btn").onclick = () => joinGroup(user, groupRef, groupName);
+      $("join-btn").onclick = () => joinGroup(user, groupRef, groupName);
 
     } catch (e) {
-      // A missing collectionGroup index throws 'failed-precondition' with a
-      // direct "create this index" link inside e.message — logging the
-      // full error (not just console.error(e)) makes that link visible
-      // without needing devtools' object inspector.
+      // permission-denied  -> Firestore rules block reading invites
+      // failed-precondition -> collection-group index missing (message has a create link)
+      // unavailable         -> offline
       console.error("Invite lookup failed:", e.code, e.message);
-      document.getElementById("invalid-title").textContent = "Couldn't load this invite";
-      document.getElementById("invalid-reason").textContent = "Check your connection and try again.";
-      // TEMP DEBUG — remove once the underlying cause is confirmed fixed.
-      // Puts the raw error right on the page so it's readable on a phone
-      // with no computer/devtools access needed.
-      const debugEl = document.createElement("p");
-      debugEl.style.cssText = "font-size:11px;color:#e24b4a;margin-top:12px;word-break:break-all;";
-      debugEl.textContent = (e.code || "") + ": " + (e.message || e);
-      document.getElementById("invalid-reason").insertAdjacentElement("afterend", debugEl);
-      show("invalid");
+      showProblem("error", (e.code || "") + ": " + (e.message || e));
     }
   }
 
   async function doEmailLogin() {
-    const email = document.getElementById("signin-email").value.trim();
-    const password = document.getElementById("signin-password").value.trim();
-    const errorEl = document.getElementById("signin-error");
+    const email = $("signin-email").value.trim();
+    const password = $("signin-password").value.trim();
+    const errorEl = $("signin-error");
     errorEl.classList.add("hidden");
 
     if (!email || !password) {
@@ -508,16 +702,14 @@
       errorEl.classList.remove("hidden");
       return;
     }
-
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
       if (!cred.user.emailVerified) {
         await auth.signOut();
         errorEl.textContent = "Please verify your email before continuing.";
         errorEl.classList.remove("hidden");
-        return;
       }
-      // onAuthStateChanged picks this up and re-runs loadInvite automatically.
+      // onAuthStateChanged re-runs loadInvite automatically.
     } catch (e) {
       const messages = {
         "auth/invalid-email": "Invalid email format.",
@@ -534,35 +726,23 @@
   }
 
   async function joinGroup(user, groupRef, groupName) {
-    const btn = document.getElementById("join-btn");
+    const btn = $("join-btn");
     btn.disabled = true;
     btn.textContent = "Joining…";
-
     try {
       const groupSnapForCount = await getDoc(groupRef);
       const memberCountAfterJoin = ((groupSnapForCount.data()?.members || []).length) + 1;
 
-      // Adding yourself only — matches the Firestore rule in SETUP.md
-      // Section 3 (no admin write, no touching anyone else's data).
       await runTransaction(db, async (tx) => {
         tx.update(groupRef, { members: arrayUnion(user.uid) });
-
-        // NEW — nothing tracked which link brought in which member before
-        // this. Powers the "N joined" stat on the invite-links management
-        // screen in the app.
         tx.update(inviteDoc.ref, {
           joinedCount: (inviteDoc.data.joinedCount || 0) + 1,
           joinedUserIds: arrayUnion(user.uid),
         });
-
         if (inviteDoc.data.showPreviousMessages === false) {
           const hideRef = doc(db, groupRef.path, "hide_prev", user.uid);
           tx.set(hideRef, { joinedAt: serverTimestamp() });
         }
-
-        // Matches chat_flow_service.dart's sendSystemMessage schema exactly,
-        // so the app's GroupWelcomeCard widget renders this correctly
-        // regardless of whether the join happened in-app or via this page.
         const messageRef = doc(collection(db, "group_messages", groupRef.id, "messages"));
         tx.set(messageRef, {
           id: messageRef.id,
@@ -591,25 +771,18 @@
         });
       });
 
-      document.getElementById("success-title").textContent = "You joined " + groupName;
+      $("success-title").textContent = "You joined " + groupName;
+      $("open-app-btn").onclick = openApp;
+      $("open-web-btn").onclick = () => { location.href = DOCS_URL; };
       show("success");
-      attemptDeepLink(groupRef.id);
-
+      openApp();
     } catch (e) {
-      console.error(e);
-      document.getElementById("join-error").textContent = "Couldn't join. Try again.";
-      document.getElementById("join-error").classList.remove("hidden");
+      console.error("Join failed:", e.code, e.message);
+      $("join-error").textContent = "Couldn't join. Try again.";
+      $("join-error").classList.remove("hidden");
       btn.disabled = false;
       btn.textContent = "Join group";
     }
-  }
-
-  function attemptDeepLink(groupId) {
-    const deepLink = APP_SCHEME + groupId;
-    document.getElementById("open-app-btn").onclick = () => { window.location.href = deepLink; };
-    document.getElementById("open-web-btn").onclick = () => { window.location.href = DOCS_URL; };
-    // Silent first attempt so a returning app user drops straight in
-    window.location.href = deepLink;
   }
 </script>
 
