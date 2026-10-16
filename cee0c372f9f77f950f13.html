@@ -1,0 +1,662 @@
+<div class="phone-wrapper">
+<div class="phone-frame">
+<!-- Speaker & Camera Dynamic Island -->
+<div class="phone-island">
+<div class="camera-lens"></div>
+</div>
+
+<!-- Screen Content -->
+<div class="phone-screen">
+<!-- Status Bar -->
+<div class="status-bar">
+<span>09:41</span>
+<div class="status-icons">
+<span>5G</span>
+<span>100%</span>
+</div>
+</div>
+
+<!-- App Header -->
+<div class="app-header">
+<div class="badge-mode">ORAL EXAM MODE • VOICE NAV</div>
+<div class="subject-title">Mathematics • Question 3 of 10</div>
+</div>
+
+<!-- Progress Indicator -->
+<div class="progress-bar">
+<div class="progress-fill" style="width: 30%;"></div>
+</div>
+
+<!-- Question Card -->
+<div class="question-card">
+<div class="q-label">QUESTION</div>
+<div class="q-text" id="qText">If a triangle has angles of 40° and 70°, what is the third angle?</div>
+
+<!-- Animated Audio Wave -->
+<div class="wave-container" id="waveBox">
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+</div>
+
+<div class="status-indicator" id="statusMsg">Tap mic to begin • Say "repeat" to hear again</div>
+</div>
+
+<!-- Options Display -->
+<div class="options-box">
+<div class="opt-row" id="optA"><span>A</span> 50°</div>
+<div class="opt-row" id="optB"><span>B</span> 60°</div>
+<div class="opt-row" id="optC"><span>C</span> 70°</div>
+<div class="opt-row" id="optD"><span>D</span> 80°</div>
+</div>
+
+<!-- Voice Command Guide -->
+<div class="voice-guide">
+<div class="guide-item">🔊 Say "repeat"</div>
+<div class="guide-item">➡️ Say "next"</div>
+<div class="guide-item">⬅️ Say "previous"</div>
+<div class="guide-item">✅ Say "submit"</div>
+</div>
+
+<!-- Simulated Speech Input Drawer -->
+<div class="oral-footer">
+<div class="simulate-controls" id="simControls">
+<button class="chip-btn" onclick="submitAnswer(false)">Say "50"</button>
+<button class="chip-btn correct-chip" onclick="submitAnswer(true)">Say "70"</button>
+</div>
+
+<!-- Main Mic Action Button -->
+<button class="mic-button" id="micBtn" onclick="toggleVoice()">
+<svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+<path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+<line x1="12" y1="19" x2="12" y2="22"/>
+</svg>
+</button>
+<span class="mic-label" id="micSubtext">Tap to Enable Voice</span>
+</div>
+</div>
+</div>
+</div>
+
+<style>
+.phone-wrapper {
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 18px 0;
+width: 100%;
+}
+
+.phone-frame {
+width: 330px;
+height: 680px;
+background: #111418;
+border-radius: 44px;
+border: 9px solid #2a2e36;
+box-shadow: 0 22px 50px rgba(0,0,0,0.35);
+position: relative;
+overflow: hidden;
+box-sizing: border-box;
+}
+
+.phone-island {
+position: absolute;
+top: 10px;
+left: 50%;
+transform: translateX(-50%);
+width: 90px;
+height: 22px;
+background: #000;
+border-radius: 16px;
+z-index: 10;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.camera-lens {
+width: 9px;
+height: 9px;
+border-radius: 50%;
+background: #1a1a2e;
+border: 1px solid #333;
+}
+
+.phone-screen {
+background: #f8fafc;
+color: #0f172a;
+height: 100%;
+display: flex;
+flex-direction: column;
+padding: 14px 18px 20px;
+box-sizing: border-box;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+user-select: none;
+}
+
+@media (prefers-color-scheme: dark) {
+.phone-screen {
+background: #0d1117;
+color: #f1f5f9;
+}
+}
+
+.status-bar {
+display: flex;
+justify-content: space-between;
+font-size: 11px;
+font-weight: 600;
+margin-top: 2px;
+padding: 0 6px;
+opacity: 0.7;
+}
+
+.status-icons {
+display: flex;
+gap: 6px;
+}
+
+.app-header {
+margin-top: 24px;
+text-align: center;
+}
+
+.badge-mode {
+display: inline-block;
+padding: 3px 10px;
+border-radius: 12px;
+background: #006633;
+color: #fff;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 0.5px;
+}
+
+.subject-title {
+margin-top: 6px;
+font-size: 12px;
+opacity: 0.75;
+}
+
+.progress-bar {
+height: 4px;
+background: #e2e8f0;
+border-radius: 2px;
+overflow: hidden;
+margin: 12px 0;
+}
+
+.progress-fill {
+height: 100%;
+background: #006633;
+transition: width 0.3s ease;
+}
+
+.question-card {
+margin-top: 0;
+flex-grow: 1;
+background: #ffffff;
+border: 1px solid #e2e8f0;
+border-radius: 18px;
+padding: 16px;
+box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+text-align: center;
+display: flex;
+flex-direction: column;
+}
+
+@media (prefers-color-scheme: dark) {
+.question-card {
+background: #161b22;
+border-color: #30363d;
+}
+}
+
+.q-label {
+font-size: 10px;
+letter-spacing: 1px;
+font-weight: 700;
+color: #006633;
+margin-bottom: 4px;
+}
+
+.q-text {
+font-size: 18px;
+font-weight: 600;
+margin: 8px 0;
+line-height: 1.4;
+flex-grow: 1;
+}
+
+.wave-container {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 4px;
+height: 24px;
+margin: 10px 0;
+opacity: 0.2;
+}
+
+.wave-container.active {
+opacity: 1;
+}
+
+.wave-container.active .bar {
+animation: bounce 0.8s ease infinite alternate;
+}
+
+.bar {
+width: 4px;
+height: 10px;
+background: #006633;
+border-radius: 2px;
+}
+
+.bar:nth-child(2) { animation-delay: 0.15s; height: 16px; }
+.bar:nth-child(3) { animation-delay: 0.3s; height: 22px; }
+.bar:nth-child(4) { animation-delay: 0.45s; height: 14px; }
+.bar:nth-child(5) { animation-delay: 0.6s; height: 8px; }
+
+@keyframes bounce {
+0% { transform: scaleY(0.4); }
+100% { transform: scaleY(1.3); }
+}
+
+.status-indicator {
+font-size: 12px;
+opacity: 0.8;
+min-height: 16px;
+margin-top: 8px;
+}
+
+.options-box {
+margin-top: auto;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.opt-row {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 10px 14px;
+background: rgba(0,0,0,0.02);
+border: 1px solid #e2e8f0;
+border-radius: 12px;
+font-size: 13px;
+font-weight: 500;
+transition: all 0.25s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+.opt-row {
+background: #161b22;
+border-color: #30363d;
+}
+}
+
+.opt-row span {
+width: 22px;
+height: 22px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: #e2e8f0;
+border-radius: 6px;
+font-weight: 700;
+font-size: 11px;
+}
+
+@media (prefers-color-scheme: dark) {
+.opt-row span {
+background: #30363d;
+}
+}
+
+.opt-row.correct {
+border-color: #16a34a;
+background: rgba(22, 163, 74, 0.12);
+color: #16a34a;
+}
+
+.opt-row.wrong {
+border-color: #dc2626;
+background: rgba(220, 38, 38, 0.12);
+color: #dc2626;
+}
+
+.voice-guide {
+margin-top: 12px;
+padding: 0 16px;
+font-size: 11px;
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+opacity: 0.7;
+}
+
+.guide-item {
+display: flex;
+align-items: center;
+gap: 4px;
+}
+
+.oral-footer {
+margin-top: auto;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+padding-bottom: 8px;
+}
+
+.simulate-controls {
+display: flex;
+gap: 8px;
+margin-bottom: 4px;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+}
+
+.simulate-controls.visible {
+opacity: 1;
+pointer-events: auto;
+}
+
+.chip-btn {
+background: #e2e8f0;
+border: none;
+padding: 6px 12px;
+border-radius: 14px;
+font-size: 11px;
+font-weight: 600;
+cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+.chip-btn {
+background: #30363d;
+color: #f1f5f9;
+}
+}
+
+.chip-btn:hover {
+filter: brightness(0.95);
+}
+
+.mic-button {
+width: 62px;
+height: 62px;
+border-radius: 50%;
+background: #006633;
+border: none;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #fff;
+cursor: pointer;
+box-shadow: 0 8px 20px rgba(0, 102, 51, 0.35);
+transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.mic-button:active {
+transform: scale(0.92);
+}
+
+.mic-button.listening {
+background: #dc2626;
+box-shadow: 0 0 0 10px rgba(220, 38, 38, 0.2);
+animation: pulse-ring 1.4s infinite;
+}
+
+@keyframes pulse-ring {
+0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+70% { box-shadow: 0 0 0 14px rgba(220, 38, 38, 0); }
+100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.mic-icon {
+width: 28px;
+height: 28px;
+}
+
+.mic-label {
+font-size: 11px;
+font-weight: 600;
+opacity: 0.7;
+}
+</style>
+
+<script>
+let audioCtx = null;
+let recognition = null;
+let isListeningForCommands = false;
+let currentQuestionIndex = 2; // 0-based (showing Q3)
+const totalQuestions = 10;
+const questions = [
+{q: "What is 2 + 2?", opts: ["2", "4", "8", "22"], correct: 1},
+{q: "What is the capital of Nigeria?", opts: ["Lagos", "Abuja", "Kano", "Port Harcourt"], correct: 1},
+{q: "If a triangle has angles of 40° and 70°, what is the third angle?", opts: ["50°", "60°", "70°", "80°"], correct: 1},
+{q: "Who wrote 'Things Fall Apart'?", opts: ["Chinua Achebe", "Wole Soyinka", "Chimamanda Ngozi Adichie", "Ben Okri"], correct: 0}
+];
+
+function getAudioContext() {
+if (!audioCtx) {
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+return audioCtx;
+}
+
+function playTone(freq, type, duration) {
+try {
+const ctx = getAudioContext();
+const osc = ctx.createOscillator();
+const gain = ctx.createGain();
+osc.type = type;
+osc.frequency.setValueAtTime(freq, ctx.currentTime);
+gain.gain.setValueAtTime(0.15, ctx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+osc.connect(gain);
+gain.connect(ctx.destination);
+osc.start();
+osc.stop(ctx.currentTime + duration);
+} catch(e) {}
+}
+
+function playSuccessChime() {
+playTone(587.33, 'sine', 0.15);
+setTimeout(() => playTone(880, 'sine', 0.35), 140);
+}
+
+function playErrorTone() {
+playTone(220, 'sawtooth', 0.25);
+setTimeout(() => playTone(180, 'sawtooth', 0.35), 200);
+}
+
+function playCommandChime() {
+playTone(659.25, 'sine', 0.1); // E5
+setTimeout(() => playTone(783.99, 'sine', 0.15), 80); // G5
+}
+
+function speakText(text, callback) {
+if ('speechSynthesis' in window) {
+window.speechSynthesis.cancel();
+const u = new SpeechSynthesisUtterance(text);
+u.rate = 0.9;
+u.pitch = 1.0;
+u.onend = () => { if (callback) callback(); };
+window.speechSynthesis.speak(u);
+} else {
+setTimeout(() => { if (callback) callback(); }, 1600);
+}
+}
+
+function initSpeechRecognition() {
+if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+return null;
+}
+
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+const rec = new SpeechRec();
+rec.continuous = true;
+rec.interimResults = false;
+rec.lang = 'en-US';
+
+rec.onresult = (event) => {
+const transcript = event.results[event.resultIndex][0].transcript.trim().toLowerCase();
+handleVoiceCommand(transcript);
+};
+
+rec.onerror = (event) => {
+console.error('Speech recognition error:', event.error);
+};
+
+rec.onend = () => {
+if (isListeningForCommands) {
+rec.start(); // Restart if stopped
+}
+};
+
+return rec;
+}
+
+function startCommandListening() {
+if (!recognition) {
+recognition = initSpeechRecognition();
+}
+if (recognition) {
+isListeningForCommands = true;
+recognition.start();
+document.getElementById('waveBox').classList.add('active');
+document.getElementById('statusMsg').textContent = 'Listening for commands...';
+document.getElementById('micSubtext').textContent = 'Voice Active';
+}
+}
+
+function stopCommandListening() {
+isListeningForCommands = false;
+if (recognition) {
+recognition.stop();
+}
+document.getElementById('waveBox').classList.remove('active');
+document.getElementById('statusMsg').textContent = 'Voice commands disabled • Tap mic to re-enable';
+document.getElementById('micSubtext').textContent = 'Tap to Enable Voice';
+}
+
+function toggleVoice() {
+const micBtn = document.getElementById('micBtn');
+if (isListeningForCommands) {
+stopCommandListening();
+micBtn.classList.remove('listening');
+} else {
+startCommandListening();
+micBtn.classList.add('listening');
+speakText('Voice commands enabled. Say next, previous, submit, or repeat.');
+}
+}
+
+function handleVoiceCommand(transcript) {
+console.log('Heard:', transcript);
+const status = document.getElementById('statusMsg');
+const micSubtext = document.getElementById('micSubtext');
+
+// Clear previous feedback
+status.textContent = '';
+micSubtext.textContent = 'Processing...';
+
+setTimeout(() => {
+micSubtext.textContent = isListeningForCommands ? 'Voice Active' : 'Tap to Enable Voice';
+}, 1500);
+
+if (transcript.includes('next') || transcript.includes('go forward')) {
+playCommandChime();
+status.textContent = '➡️ Moving to next question';
+setTimeout(loadNextQuestion, 800);
+} else if (transcript.includes('previous') || transcript.includes('go back') || transcript.includes('previous')) {
+playCommandChime();
+status.textContent = '⬅️ Going to previous question';
+setTimeout(loadPreviousQuestion, 800);
+} else if (transcript.includes('submit') || transcript.includes('lock in') || transcript.includes('answer')) {
+playCommandChime();
+status.textContent = '✅ Submitting answer';
+// Simulate submitting current selection (for demo, we'll just show feedback)
+setTimeout(() => {
+const correctIdx = questions[currentQuestionIndex].correct;
+document.getElementById(`opt${String.fromCharCode(65 + correctIdx)}`).classList.add('correct');
+playSuccessChime();
+speakText('Answer submitted. Correct!');
+}, 1000);
+} else if (transcript.includes('repeat') || transcript.includes('say again') || transcript.includes('what was')) {
+playCommandChime();
+status.textContent = '🔊 Repeating question';
+speakText(questions[currentQuestionIndex].q, () => {
+status.textContent = 'Tap mic or say a command';
+});
+} else {
+// Unrecognized command
+status.textContent = '❓ Try: next, previous, submit, or repeat';
+micSubtext.textContent = 'Say again';
+setTimeout(() => {
+micSubtext.textContent = isListeningForCommands ? 'Voice Active' : 'Tap to Enable Voice';
+}, 2000);
+}
+}
+
+function loadNextQuestion() {
+if (currentQuestionIndex < totalQuestions - 1) {
+currentQuestionIndex++;
+updateQuestionUI();
+} else {
+document.getElementById('statusMsg').textContent = '🎉 Exam complete!';
+speakText('You have reached the end of the exam.');
+}
+}
+
+function loadPreviousQuestion() {
+if (currentQuestionIndex > 0) {
+currentQuestionIndex--;
+updateQuestionUI();
+} else {
+document.getElementById('statusMsg').textContent = '⏮️ Already at first question';
+speakText('This is the first question.');
+}
+}
+
+function updateQuestionUI() {
+const q = questions[currentQuestionIndex];
+document.getElementById('qText').textContent = q.q;
+document.getElementById('optA').querySelector('span:last-child').textContent = q.opts[0];
+document.getElementById('optB').querySelector('span:last-child').textContent = q.opts[1];
+document.getElementById('optC').querySelector('span:last-child').textContent = q.opts[2];
+document.getElementById('optD').querySelector('span:last-child').textContent = q.opts[3];
+
+// Reset option highlights
+['A','B','C','D'].forEach(opt => {
+document.getElementById(`opt${opt}`).className = 'opt-row';
+});
+
+// Update progress
+const progressPercent = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+document.querySelector('.progress-fill').style.width = progressPercent + '%';
+
+// Update header
+document.querySelector('.subject-title').textContent = `Mathematics • Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+
+// Auto-speak new question if voice is active
+if (isListeningForCommands) {
+speakText(q.q);
+}
+}
+
+// Initialize first question on load
+window.onload = () => {
+updateQuestionUI();
+document.getElementById('statusMsg').textContent = 'Tap mic to begin • Say "repeat" to hear again';
+};
+</script>
