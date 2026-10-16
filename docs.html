@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zindryx — Help & What's New</title>
+<title>Zindryx: Help &amp; What's New</title>
 
+<meta name="theme-color" content="#BB86FC">
 <link rel="icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
+<link rel="shortcut icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
+<meta property="og:site_name" content="Zindryx">
+<meta property="og:url" content="https://linking.chadivavirtuals.name.ng/docs">
 <link rel="apple-touch-icon" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
-<meta property="og:title" content="Zindryx — Help & What's New">
+<meta property="og:title" content="Zindryx: Help &amp; What's New">
 <meta property="og:description" content="What's new in Zindryx, plus help with invites, messaging, and more.">
 <meta property="og:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Zindryx — Help & What's New">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zindryx: Help &amp; What's New">
 <meta name="twitter:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
 <script>
   (function () {
@@ -411,7 +415,7 @@
   <div class="section">
     <h2>Get the app</h2>
     <div class="btn-row">
-      <a class="btn-primary" id="playstore-btn" href="#">Get it on Google Play</a>
+      <a class="btn-primary" id="download-btn" href="/zindryx_join">Download Zindryx</a>
       <button class="btn-secondary" id="open-app-btn">Open in Zindryx app</button>
     </div>
   </div>
@@ -428,7 +432,7 @@
         <p class="feature-title">Invite via link</p>
         <p class="feature-desc">Share a group with one tap — set an expiry, choose whether new members see old messages.</p>
       </div>
-      <button class="feature-btn" data-deeplink="zindryx://feature/invite_links">Try it</button>
+      <button class="feature-btn" >Open app</button>
     </div>
 
     <div class="feature-row">
@@ -436,7 +440,7 @@
         <p class="feature-title">Locked groups</p>
         <p class="feature-desc">Require admin approval before anyone new can join.</p>
       </div>
-      <button class="feature-btn" data-deeplink="zindryx://feature/lock_group">Try it</button>
+      <button class="feature-btn" >Open app</button>
     </div>
 
     <!-- TODO: add more entries here as features ship, same pattern -->
@@ -624,19 +628,34 @@
 
     <details class="faq-item">
       <summary>Where is my data stored?</summary>
-      <p>Messages and group data are stored on Firebase Google Firestore. Invite links are validated and joins are processed directly against Firestore's security rules — Zindryx doesn't run a separate server that touches your messages.</p>
+      <p>Messages and group data are stored on Firebase Google Firestore. Invite links are validated and joins are processed directly against Firestore's security rules. Zindryx doesn't run a separate server that touches your messages.</p>
     </details>
 
     <details class="faq-item">
       <summary>Can a link be canceled early?</summary>
       <p>Yes — the group admin can revoke a link at any time from group info, even before it expires.</p>
     </details>
+
+    <details class="faq-item">
+      <summary>My code says "invalid". What does that mean?</summary>
+      <p>We couldn't find an invite with that code. Invite codes are 7 letters or numbers, so check for a typo, or paste the whole link and we'll pull the code out for you.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>My code says "expired" or "revoked".</summary>
+      <p>Expired means the link passed the expiry date set by the admin. Revoked means the admin cancelled it. Either way, ask the group admin for a new link.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>I opened the site and it says "No code detected".</summary>
+      <p>The link didn't include an invite code. Paste your code on the home page, or ask the admin to send the link again.</p>
+    </details>
   </div>
 
 </div>
 
 <div class="footer">
-  Zindryx · <a href="#" id="app-link-footer">Open the app</a>
+  Zindryx · <a href="#" id="app-link-footer">Open the app</a> · <a href="/zindryx_join">Download</a>
   <div class="theme-row">
     <button class="theme-btn" id="theme-light-btn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/><line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/></svg>
@@ -836,41 +855,29 @@
 
 
   // ============================================================
-  // CONFIG — TODO: fill in once these exist
+  // Open the app: the app has no custom scheme, it opens through the
+  // https App Link. On Android we use an intent link that falls back
+  // to the download page if the app isn't installed.
   // ============================================================
-  // Stubbed as a search link since the Play Store listing isn't live yet —
-  // swap for the real "details?id=..." link once it's published.
-  const PLAY_STORE_URL = "https://play.google.com/store/search?q=zindryx&c=apps";
-  // Confirmed package name: com.zindryx.hxfhub.app
-  // TODO: APP_SCHEME_BASE is still a guess — waiting on the AndroidManifest
-  // intent-filter to confirm the real custom scheme (or switch to App Links).
-  const APP_SCHEME_BASE = "zindryx://";
+  const PKG = "com.zindryx.hxfhub";
+  const SITE = "https://linking.chadivavirtuals.name.ng";
+  const DOWNLOAD_URL = SITE + "/zindryx_join";
 
-  document.getElementById("playstore-btn").href = PLAY_STORE_URL;
-
-  function tryDeepLink(link) {
+  function openApp() {
     const toast = document.getElementById("toast");
-    toast.classList.add("show");
-    window.location.href = link;
-    setTimeout(() => {
-      toast.classList.remove("show");
-      // If the app wasn't installed, the page is still here after this
-      // timeout — fall back to the store listing.
-      window.location.href = PLAY_STORE_URL;
-    }, 1500);
+    if (/android/i.test(navigator.userAgent)) {
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1800);
+      window.location.href = "intent://linking.chadivavirtuals.name.ng/#Intent;scheme=https;package=" + PKG +
+        ";S.browser_fallback_url=" + encodeURIComponent(DOWNLOAD_URL) + ";end";
+    } else {
+      window.location.href = DOWNLOAD_URL;
+    }
   }
 
-  document.getElementById("open-app-btn").addEventListener("click", () => {
-    tryDeepLink(APP_SCHEME_BASE + "home");
-  });
-  document.getElementById("app-link-footer").addEventListener("click", (e) => {
-    e.preventDefault();
-    tryDeepLink(APP_SCHEME_BASE + "home");
-  });
-
-  document.querySelectorAll(".feature-btn").forEach(btn => {
-    btn.addEventListener("click", () => tryDeepLink(btn.dataset.deeplink));
-  });
+  document.getElementById("open-app-btn").addEventListener("click", openApp);
+  document.getElementById("app-link-footer").addEventListener("click", (e) => { e.preventDefault(); openApp(); });
+  document.querySelectorAll(".feature-btn").forEach(btn => btn.addEventListener("click", openApp));
 </script>
 
 </body>
