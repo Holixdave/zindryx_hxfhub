@@ -3,22 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zindryx: Help &amp; What's New</title>
-
+<title>Zindryx: Study together, not alone</title>
+<meta name="description" content="Zindryx is a study app for JAMB and WAEC students: synced practice exams you take together, OOOR (an AI built for studying), and private, safe chats. Built by Hxf Hub.">
 <meta name="theme-color" content="#BB86FC">
+
+<!-- Site icon: browser tab, bookmarks, home-screen shortcuts and link previews all use these -->
 <link rel="icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
 <link rel="shortcut icon" type="image/png" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703263055_ai_images/1788703263055_scaled_favicon.png">
-<meta property="og:site_name" content="Zindryx">
-<meta property="og:url" content="https://linking.chadivavirtuals.name.ng/docs">
 <link rel="apple-touch-icon" href="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
-<meta property="og:title" content="Zindryx: Help &amp; What's New">
-<meta property="og:description" content="What's new in Zindryx, plus help with invites, messaging, and more.">
+<meta property="og:site_name" content="Zindryx">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://linking.chadivavirtuals.name.ng/docs">
+<meta property="og:title" content="Zindryx: Study together, not alone">
+<meta property="og:description" content="Synced practice exams, an AI built for studying, and private, safe chats for JAMB and WAEC students.">
 <meta property="og:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zindryx: Help &amp; What's New">
+<meta name="twitter:title" content="Zindryx: Study together, not alone">
 <meta name="twitter:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
 <script>
   (function () {
+    document.documentElement.classList.add("js");
     var stored = null;
     try { stored = localStorage.getItem("zindryx-theme"); } catch (e) {}
     var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
@@ -38,133 +42,176 @@
     --font-head: 'Poppins', sans-serif;
     --font-body: 'Lora', serif;
   }
-
   [data-theme="light"] {
-    --bg: #F5F5F5;
-    --surface: #FFFFFF;
-    --surface-2: #FBFAFC;
-    --border: #E4DEEC;
-    --text: #1A0033;
-    --text-secondary: #5C5468;
-    --text-muted: #8B8494;
+    --bg: #F5F5F5; --surface: #FFFFFF; --surface-2: #FBFAFC; --border: #E4DEEC;
+    --text: #1A0033; --text-secondary: #5C5468; --text-muted: #8B8494;
+    --ok: #2E7D32; --ok-bg: #E8F5E9;
   }
-
   [data-theme="dark"] {
-    --bg: #131019;
-    --surface: #1C1C1E;
-    --surface-2: #1A1A24;
-    --border: #2E2A38;
-    --text: #F2EEFA;
-    --text-secondary: #B8B0C6;
-    --text-muted: #837C90;
+    --bg: #131019; --surface: #1C1C1E; --surface-2: #1A1A24; --border: #2E2A38;
+    --text: #F2EEFA; --text-secondary: #B8B0C6; --text-muted: #837C90;
+    --ok: #6FCF73; --ok-bg: #16281A;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: var(--font-body);
-    background: var(--bg);
-    color: var(--text);
-    display: flex; flex-direction: column; align-items: center;
-    padding: 28px 20px 48px;
-  }
-  .wrap { max-width: 480px; width: 100%; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; }
+  a { color: inherit; }
+  img { max-width: 100%; }
+  .container { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 
-  .wordmark {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: 0.02em;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-  .tagline { font-size: 13px; color: var(--text-muted); margin: 0 0 28px; font-style: italic; }
+  /* ---------- top bar ---------- */
+  .topbar { position: sticky; top: 0; z-index: 40; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .topbar .container { display: flex; align-items: center; gap: 18px; height: 60px; }
+  .brand { font-family: var(--font-head); font-weight: 700; font-size: 20px; letter-spacing: 0.02em; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .brand img { width: 26px; height: 26px; }
+  .topnav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+  .topnav::-webkit-scrollbar { display: none; }
+  .topnav a { font-family: var(--font-head); font-size: 13px; font-weight: 500; color: var(--text-secondary); text-decoration: none; padding: 7px 11px; border-radius: 8px; white-space: nowrap; }
+  .topnav a:hover, .topnav a.active { color: var(--text); background: var(--surface); }
+  .topnav a.active { box-shadow: inset 0 0 0 1px var(--border); }
+  .top-dl { flex-shrink: 0; }
+  @media (max-width: 720px) { .topnav { display: none; } .top-dl { margin-left: auto; } }
 
-  .section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px 20px;
-    margin-bottom: 16px;
-  }
-  h2 {
-    font-family: var(--font-head);
-    font-size: 15px; font-weight: 600;
-    margin: 0 0 14px;
-    display: flex; align-items: center; gap: 8px;
-    color: var(--accent-strong);
-  }
-  [data-theme="dark"] h2 { color: var(--accent); }
-  p { font-size: 14px; line-height: 1.65; color: var(--text-secondary); margin: 0 0 10px; }
-  p:last-child { margin-bottom: 0; }
+  /* ---------- buttons ---------- */
+  .btn { display: inline-block; font-family: var(--font-head); font-size: 14.5px; font-weight: 600; text-decoration: none; text-align: center; padding: 12px 22px; border-radius: 10px; border: 1px solid transparent; cursor: pointer; background: var(--accent); color: var(--accent-strong); }
+  .btn:active { opacity: 0.85; }
+  .btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+  .btn.sm { padding: 8px 14px; font-size: 13px; border-radius: 8px; }
+  .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-  .feature-row {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px;
-    padding: 12px 0;
-    border-top: 1px solid var(--border);
-  }
-  .feature-row:first-of-type { border-top: none; padding-top: 0; }
-  .feature-text { flex: 1; }
-  .feature-title { font-family: var(--font-head); font-size: 13.5px; font-weight: 600; margin: 0 0 2px; }
-  .feature-desc { font-size: 12.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
-  .feature-btn {
-    flex-shrink: 0;
-    font-family: var(--font-head);
-    font-size: 12.5px; font-weight: 600;
-    background: var(--surface-2); color: var(--accent-strong);
-    border: 1px solid var(--border);
-    border-radius: 8px; padding: 7px 12px;
-    cursor: pointer;
-  }
-  [data-theme="dark"] .feature-btn { color: var(--accent); }
-  .feature-btn:active { opacity: 0.8; }
+  /* ---------- sections ---------- */
+  section { padding: 64px 0; border-top: 1px solid var(--border); }
+  section.hero { border-top: none; padding: 52px 0 56px; }
+  .eyebrow { font-family: var(--font-head); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+  h1, h2, h3 { font-family: var(--font-head); font-weight: 600; margin: 0; }
+  h1 { font-size: clamp(32px, 5.2vw, 52px); line-height: 1.12; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(24px, 3.4vw, 34px); line-height: 1.2; margin-bottom: 14px; }
+  h3 { font-size: 16px; margin-bottom: 6px; }
+  p { margin: 0 0 12px; color: var(--text-secondary); font-size: 16px; }
+  .lead { font-size: 17.5px; line-height: 1.7; max-width: 60ch; }
+  .muted { color: var(--text-muted); font-size: 13.5px; }
 
-  .btn-row { display: flex; flex-direction: column; gap: 10px; }
-  .btn-primary, .btn-secondary {
-    width: 100%; padding: 13px; border-radius: 10px;
-    font-family: var(--font-head); font-size: 14.5px; font-weight: 600;
-    cursor: pointer; border: none; text-align: center; text-decoration: none;
-    display: block;
-  }
-  .btn-primary { background: var(--accent); color: var(--accent-strong); }
-  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .grid { display: grid; gap: 14px; }
+  .grid.two { grid-template-columns: repeat(2, 1fr); }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 800px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
+  .card p:last-child { margin-bottom: 0; }
+  .card p { font-size: 14.5px; }
 
-  .faq-item summary {
-    font-family: var(--font-head);
-    font-size: 13.5px; font-weight: 600;
-    cursor: pointer; padding: 12px 0;
-    list-style: none;
+  .ico { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+
+  /* ---------- hero ---------- */
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero .lead { margin: 18px 0 24px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .stat { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 10px 14px; }
+  .stat b { display: block; font-family: var(--font-head); font-size: 17px; font-weight: 600; }
+  .stat span { font-size: 12.5px; color: var(--text-muted); }
+
+  /* ---------- changelog ---------- */
+  .release { border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 12px; }
+  .release-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .release-top h3 { margin: 0; font-size: 17px; }
+  .tag { font-family: var(--font-head); font-size: 10.5px; font-weight: 600; letter-spacing: 0.03em; padding: 3px 9px; border-radius: 20px; background: var(--accent); color: var(--accent-strong); }
+  .tag.soft { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+  .release ul { margin: 0; padding-left: 18px; }
+  .release li { font-size: 14.5px; color: var(--text-secondary); margin-bottom: 6px; }
+  .release li b { color: var(--text); font-weight: 500; }
+
+  /* ---------- story ---------- */
+  .story { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; }
+  @media (max-width: 860px) { .story { grid-template-columns: 1fr; gap: 20px; } }
+  .timeline { position: relative; padding-left: 22px; }
+  .timeline::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-item::before { content: ""; position: absolute; left: -22px; top: 7px; width: 11px; height: 11px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); }
+  .tl-item h3 { font-size: 15px; }
+  .tl-item p { font-size: 14.5px; margin: 0; }
+  .callout { border: 1px solid var(--border); border-left: 3px solid var(--accent); background: var(--surface); border-radius: 10px; padding: 14px 16px; margin-top: 18px; }
+  .callout p { font-size: 14.5px; margin: 0; }
+
+  /* ---------- feature rows ---------- */
+  .feature { display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: center; padding: 28px 0; }
+  .feature.flip { grid-template-columns: 300px 1fr; }
+  .feature.flip .f-text { order: 2; }
+  @media (max-width: 860px) {
+    .feature, .feature.flip { grid-template-columns: 1fr; gap: 24px; }
+    .feature.flip .f-text { order: 0; }
   }
-  .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary::after { content: '+'; float: right; color: var(--accent); font-weight: 400; }
-  .faq-item[open] summary::after { content: '–'; }
-  .faq-item p { padding-bottom: 12px; }
+  .f-text ul { margin: 12px 0 0; padding: 0; list-style: none; }
+  .f-text li { position: relative; padding-left: 24px; margin-bottom: 9px; font-size: 15px; color: var(--text-secondary); }
+  .f-text li::before { content: ""; position: absolute; left: 0; top: 9px; width: 10px; height: 6px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg) translateY(-3px); }
+
+  /* ---------- phone mockups ---------- */
+  .phone { width: 260px; margin: 0 auto; background: #0b0b0d; border-radius: 34px; padding: 8px; box-shadow: 0 10px 28px rgba(0,0,0,0.22); }
+  .screen { background: var(--surface); border-radius: 26px; overflow: hidden; min-height: 440px; display: flex; flex-direction: column; font-family: var(--font-body); }
+  .s-bar { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .s-bar b { font-family: var(--font-head); font-size: 12.5px; font-weight: 600; flex: 1; }
+  .s-bar small { font-size: 10.5px; color: var(--text-muted); }
+  .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 9px; font-weight: 600; color: var(--accent); }
+  .s-body { padding: 12px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+  .q { border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 11.5px; color: var(--text); line-height: 1.45; }
+  .opt { border: 1px solid var(--border); border-radius: 8px; padding: 7px 9px; font-size: 11px; color: var(--text-secondary); display: flex; gap: 7px; }
+  .opt.sel { border-color: var(--accent); background: var(--surface-2); color: var(--text); }
+  .opt i { font-style: normal; font-family: var(--font-head); font-weight: 600; color: var(--accent); }
+  .row { display: flex; gap: 6px; align-items: center; }
+  .chip { font-family: var(--font-head); font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-secondary); white-space: nowrap; }
+  .chip.on { background: var(--accent); color: var(--accent-strong); border-color: transparent; }
+  .bub { max-width: 84%; padding: 8px 10px; border-radius: 12px; font-size: 11px; line-height: 1.45; border: 1px solid var(--border); }
+  .bub.me { align-self: flex-end; background: var(--accent); color: var(--accent-strong); border-color: transparent; }
+  .bub.them { align-self: flex-start; background: var(--surface-2); color: var(--text); }
+  .wave { display: flex; align-items: center; gap: 2px; height: 16px; }
+  .wave i { width: 2px; border-radius: 1px; background: var(--accent); display: block; }
+  .bar { height: 6px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border); overflow: hidden; flex: 1; }
+  .bar i { display: block; height: 100%; background: var(--accent); }
+  .toggle { display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); border-radius: 10px; padding: 9px 10px; font-size: 11px; color: var(--text); }
+  .sw { width: 28px; height: 16px; border-radius: 9px; background: var(--border); position: relative; flex-shrink: 0; }
+  .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); }
+  .sw.on { background: var(--accent); }
+  .sw.on::after { left: 14px; }
+  .note-pill { align-self: flex-start; display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-family: var(--font-head); font-weight: 600; color: var(--ok); background: var(--ok-bg); padding: 4px 9px; border-radius: 20px; }
+  .caption { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 12px; font-style: italic; }
+
+  /* ---------- safety / small cards ---------- */
+  .mini { display: flex; gap: 14px; align-items: flex-start; }
+  .mini .ico { margin: 0; flex-shrink: 0; }
+
+  /* ---------- FAQ ---------- */
   .faq-item { border-top: 1px solid var(--border); }
-  .faq-item:first-of-type { border-top: none; }
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+  .faq-item summary { font-family: var(--font-head); font-size: 15px; font-weight: 600; cursor: pointer; padding: 16px 0; list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: '+'; float: right; color: var(--accent); font-weight: 400; font-size: 20px; line-height: 1; }
+  .faq-item[open] summary::after { content: '–'; }
+  .faq-item p { padding-bottom: 14px; font-size: 15px; }
 
-  .footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 22px; line-height: 1.6; }
+  /* ---------- cta + footer ---------- */
+  .cta { text-align: center; }
+  .cta .card { padding: 44px 24px; }
+  .cta p { max-width: 52ch; margin: 0 auto 22px; }
+  .cta .btn-row { justify-content: center; }
+  .footer { border-top: 1px solid var(--border); padding: 30px 0 44px; font-size: 13px; color: var(--text-muted); }
+  .footer .container { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: space-between; align-items: center; }
   .footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
-  .theme-row {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    margin-top: 14px;
-  }
-  .theme-btn {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-family: var(--font-head);
-    font-size: 12px; font-weight: 600;
-    padding: 6px 12px; border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--surface); color: var(--text-muted);
-    cursor: pointer;
-  }
+  .footer .links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .theme-row { display: flex; gap: 8px; }
+  .theme-btn { font-family: var(--font-head); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; }
   .theme-btn.active { background: var(--accent); color: var(--accent-strong); border-color: transparent; }
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--accent-strong); color: #fff;
-    font-family: var(--font-head); font-size: 13px;
-    padding: 10px 18px; border-radius: 10px;
-    opacity: 0; transition: opacity 0.25s; pointer-events: none;
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--accent-strong); color: #fff; font-family: var(--font-head); font-size: 13px; padding: 10px 18px; border-radius: 10px; opacity: 0; transition: opacity 0.25s; pointer-events: none; z-index: 60; }
+  .toast.show { opacity: 1; }
+
+  /* ---------- scroll reveal (only when JS is on) ---------- */
+  .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
   }
+
   /* ============================================================
      Phone frame — iOS-style shell wrapping the chat demo
      ============================================================ */
@@ -406,54 +453,301 @@
 </head>
 <body>
 
-<div class="wrap">
+<header class="topbar">
+  <div class="container">
+    <a class="brand" href="#top"><img src="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png" alt="" aria-hidden="true">ZINDRYX</a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#whats-new">What's new</a>
+      <a href="#story">Our story</a>
+      <a href="#features">Features</a>
+      <a href="#safety">Safety</a>
+      <a href="#demos">See it work</a>
+      <a href="#faq">FAQ</a>
+      <a href="#support">Support</a>
+    </nav>
+    <a class="btn sm top-dl" href="/zindryx_join">Download</a>
+  </div>
+</header>
 
-  <div class="wordmark">ZINDRYX</div>
-  <p class="tagline">Help, updates, and everything invite links do.</p>
+<main id="top">
 
-  <!-- Download / open app -->
-  <div class="section">
-    <h2>Get the app</h2>
-    <div class="btn-row">
-      <a class="btn-primary" id="download-btn" href="/zindryx_join">Download Zindryx</a>
-      <button class="btn-secondary" id="open-app-btn">Open in Zindryx app</button>
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">For JAMB and WAEC students</p>
+      <h1>Study together, <em>not alone.</em></h1>
+      <p class="lead">Zindryx is a study app where you practise exams in real time with other students, ask an AI built for studying, and chat in a space designed to keep you safe.</p>
+      <div class="btn-row">
+        <a class="btn" href="/zindryx_join">Download for Android</a>
+        <a class="btn ghost" href="#" aria-disabled="true" title="Coming soon">Google Play: coming soon</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>1,000+</b><span>practice questions</span></div>
+        <div class="stat"><b>JAMB &amp; WAEC</b><span>exam coverage</span></div>
+        <div class="stat"><b>Works offline</b><span>download questions</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="s-bar"><b>Synced practice room</b><small>04:12</small></div>
+          <div class="s-body">
+            <div class="row"><span class="chip on">English</span><span class="chip">Q 7 / 20</span></div>
+            <div class="q">Choose the option that best completes the sentence: The committee ___ yet to submit its report.</div>
+            <div class="opt"><i>A</i> have</div>
+            <div class="opt sel"><i>B</i> has</div>
+            <div class="opt"><i>C</i> are</div>
+            <div class="row" style="margin-top:2px;"><div class="dot">A</div><div class="bar"><i style="width:70%"></i></div><div class="dot">C</div><div class="bar"><i style="width:55%"></i></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="caption">Practice with friends. See who's ahead.</p>
     </div>
   </div>
+</section>
 
-  <!-- What's New -->
-  <div class="section">
-    <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9L21 12l-6.6 3.1L12 22l-2.4-6.9L3 12l6.6-3.1z"/></svg>
-      What's new
-    </h2>
+<!-- ============================ WHAT'S NEW ============================ -->
+<section id="whats-new">
+  <div class="container">
+    <p class="eyebrow">What's new</p>
+    <h2>Latest updates</h2>
+    <p class="lead">Current app version: <b id="live-version">1.1.6</b>. <span id="live-date"></span> Every version is listed on the <a href="/zindryx_join">download page</a>.</p>
 
-    <div class="feature-row">
-      <div class="feature-text">
-        <p class="feature-title">Invite via link</p>
-        <p class="feature-desc">Share a group with one tap — set an expiry, choose whether new members see old messages.</p>
-      </div>
-      <button class="feature-btn" >Open app</button>
-    </div>
-
-    <div class="feature-row">
-      <div class="feature-text">
-        <p class="feature-title">Locked groups</p>
-        <p class="feature-desc">Require admin approval before anyone new can join.</p>
-      </div>
-      <button class="feature-btn" >Open app</button>
-    </div>
-
-    <!-- TODO: add more entries here as features ship, same pattern -->
+    <!-- To add a release: copy one <article class="release"> block, put it on top, edit the text. -->
+    <article class="release reveal">
+      <div class="release-top"><h3>Version 1.1.6</h3><span class="tag">Current build</span></div>
+      <ul>
+        <li><b>Invite links.</b> Groups are now joined by invite link. Admins set an expiry and choose whether new members can see earlier messages. Admins can revoke a link at any time.</li>
+        <li><b>Locked groups.</b> Turn on a lock and new people wait for admin approval before joining.</li>
+        <li><b>Privacy controls.</b> Choose who can add you to groups and who can call you. You can set either to nobody.</li>
+        <li><b>Change log notes:</b> detailed notes for this version are coming soon.</li>
+      </ul>
+    </article>
   </div>
+</section>
 
-  <!-- See it in action -->
-  <div class="section">
-    <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4A8.5 8.5 0 0 1 3 12.6 8.38 8.38 0 0 1 11.5 4a8.5 8.5 0 0 1 9.5 7.5z"/></svg>
-      See it in action
-    </h2>
-    <p>Drag the bar below, swipe, or hold Shift and scroll to move between demos.</p>
+<!-- ============================ INVITE LINKS (kept near the top so it is easy to find) ============================ -->
+<section id="invites">
+  <div class="container">
+    <p class="eyebrow">Invite links</p>
+    <h2>How invite links work</h2>
+    <p class="lead">To join a group on Zindryx you need an invite link. An invite link looks like <b>linking.chadivavirtuals.name.ng/?code=abc1234</b>. The code is 7 letters or numbers. Opening the link on a phone with Zindryx installed opens the app and shows the group with a Join button. Without the app, the website handles it.</p>
+    <div class="grid two" style="margin-top:20px;">
+      <div class="card reveal">
+        <h3>What a link shares</h3>
+        <p>Before joining, you only see the group's name, photo and member count. Never message content.</p>
+      </div>
+      <div class="card reveal">
+        <h3>What admins control</h3>
+        <p>The expiry (up to 7 days by default), whether new members see earlier messages, and revoking the link early.</p>
+      </div>
+      <div class="card reveal">
+        <h3>If a link doesn't work</h3>
+        <p><b>No code detected:</b> the link had no code. <b>Invalid code:</b> no invite with that code exists, so check for a typo. <b>Expired:</b> it passed its expiry date. <b>Revoked:</b> the admin cancelled it. For the last two, ask the admin for a new link.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Same idea for calls</h3>
+        <p>You decide who can add you to groups and who can call you. Set it to nobody and no one can add you without your consent.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ============================ STORY ============================ -->
+<section id="story">
+  <div class="container">
+    <p class="eyebrow">Our story</p>
+    <h2>Built by one developer. Grown by a small team.</h2>
+    <div class="story">
+      <div>
+        <p class="lead">Hxf Hub started with one person: <b>Ifeanyi David Onyeka</b>, also known as <b>Holixdave Hxf</b>. The studio carries his name, and he built the first version alone. As the app grew, a small team formed around it to keep up.</p>
+        <p>Zindryx was first made for JAMB students. It has since grown to cover secondary school standard education, with JAMB and WAEC practice.</p>
+        <div class="callout"><p><b>Why "Zindryx"?</b> We searched around online for a name and couldn't find anything matching that word. So it was ours. We tied it to a meaning: <b>Genesis</b>, a beginning.</p></div>
+        <div class="callout"><p><b>Students in higher institutions:</b> Learning content on Zindryx is built for JAMB and WAEC, so we can't promise it for your courses. The platform parts, like chat and calls, are open to you as a study-focused space.</p></div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item reveal"><h3>The spark</h3><p>Studying alone is hard. Answering past questions alone is harder. Students who prepare by themselves can feel left behind.</p></div>
+        <div class="tl-item reveal"><h3>A solo build</h3><p>Hxf Hub began as a one-developer project, shaped by what students actually needed to prepare for their exams.</p></div>
+        <div class="tl-item reveal"><h3>Practise together</h3><p>The answer was a synced exam system: many students, one practice room, the same questions, in real time.</p></div>
+        <div class="tl-item reveal"><h3>OOOR joins</h3><p>An AI built far beyond exam schemes arrived to explain, teach and keep your notes.</p></div>
+        <div class="tl-item reveal"><h3>Safer by design</h3><p>Chats, groups and calls got privacy controls and protection against spam and fraud.</p></div>
+        <div class="tl-item reveal"><h3>A growing team</h3><p>A small team now builds Zindryx together, and we're still growing.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FEATURES ============================ -->
+<section id="features">
+  <div class="container">
+    <p class="eyebrow">Features</p>
+    <h2>Everything you need to prepare</h2>
+    <p class="lead">Three big ideas sit at the centre of Zindryx. Around them are the tools that make studying easier.</p>
+
+    <!-- Pillar 1 -->
+    <div class="feature reveal">
+      <div class="f-text">
+        <p class="eyebrow">Pillar 1</p>
+        <h2>Synced CBT exams</h2>
+        <p>Studying and answering questions alone can leave you behind. So Zindryx has a synced exam system: several students practise the same questions together, in real time, in one practice room.</p>
+        <ul>
+          <li>Challenge each other and watch progress live</li>
+          <li>Send voice notes and reactions while you practise</li>
+          <li>Questions are fresh every session. We have 1,000+ questions in the bank, and OOOR can create new ones for each synced session</li>
+          <li>Covers JAMB and WAEC</li>
+        </ul>
+      </div>
+      <div>
+        <div class="phone"><div class="screen">
+          <div class="s-bar"><b>Practice room</b><small>4 online</small></div>
+          <div class="s-body">
+            <div class="row"><div class="dot">A</div><div class="dot">C</div><div class="dot">T</div><div class="dot">+1</div></div>
+            <div class="q">Which of these is a renewable source of energy?</div>
+            <div class="opt"><i>A</i> Coal</div><div class="opt sel"><i>B</i> Solar</div><div class="opt"><i>C</i> Diesel</div>
+            <div class="bub them">Ada: that was quick 😅</div>
+            <div class="bub them"><div class="wave"><i style="height:5px"></i><i style="height:11px"></i><i style="height:8px"></i><i style="height:14px"></i><i style="height:6px"></i><i style="height:12px"></i><i style="height:9px"></i><i style="height:4px"></i><i style="height:10px"></i></div></div>
+            <div class="row"><span class="chip">🔥</span><span class="chip">👏</span><span class="chip">😂</span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Pillar 2 -->
+    <div class="feature flip reveal">
+      <div class="f-text">
+        <p class="eyebrow">Pillar 2</p>
+        <h2>OOOR: Out Of Ordinary Response</h2>
+        <p>OOOR isn't one model. It combines several large language models working together to give you the best result in the most efficient way. It goes far beyond exam schemes.</p>
+        <ul>
+          <li>Ask anything and get clear explanations</li>
+          <li>Needed a formula? Ask OOOR to save it to your notebook</li>
+          <li>Ask OOOR to edit an existing note for you</li>
+          <li>Built into the app, so it's there while you study</li>
+        </ul>
+      </div>
+      <div>
+        <div class="phone"><div class="screen">
+          <div class="s-bar"><div class="dot">O</div><b>OOOR</b></div>
+          <div class="s-body">
+            <div class="bub me">Save the quadratic formula to my notebook</div>
+            <div class="bub them">Done. Here it is: x = (−b ± √(b² − 4ac)) / 2a</div>
+            <span class="note-pill">✓ Saved to notebook</span>
+            <div class="bub me">Add a worked example to that note</div>
+            <div class="bub them">Updated your note with an example for 2x² + 3x − 2 = 0.</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Pillar 3 -->
+    <div class="feature reveal">
+      <div class="f-text">
+        <p class="eyebrow">Pillar 3</p>
+        <h2>Chat that respects you</h2>
+        <p>Chat works the way real-time messaging apps do, with privacy built in. You decide who can reach you.</p>
+        <ul>
+          <li>Strangers have to send a request first</li>
+          <li>Until you accept, a non-friend can send no more than two messages</li>
+          <li>A report button is always one tap away for suspicious behaviour</li>
+          <li>Real-time in-app support to answer students' questions</li>
+        </ul>
+      </div>
+      <div>
+        <div class="phone"><div class="screen">
+          <div class="s-bar"><div class="dot">N</div><b>New message request</b></div>
+          <div class="s-body">
+            <div class="card" style="padding:12px;"><b style="font-family:var(--font-head);font-size:12px;">Nkem wants to chat</b><p style="font-size:11px;margin:4px 0 10px;">They can send up to 2 messages until you accept.</p>
+              <div class="row"><span class="chip on">Accept</span><span class="chip">Decline</span><span class="chip">Report</span></div></div>
+            <div class="bub them">Hi! Saw you in the English room 👋</div>
+            <div class="bub them">Want to practise together?</div>
+            <div class="row"><span class="chip">2 messages max until you accept</span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Everything else -->
+    <h3 style="margin:30px 0 14px;font-size:20px;">And more</h3>
+    <div class="grid three">
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 19h14"/></svg></div><h3>Offline mode</h3><p>Download questions ahead of time to save data, then practise on the go with no internet.</p></div>
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 7h6M8 11h6"/></svg></div><h3>Study notes</h3><p>Keep a notebook of formulas and key points. OOOR can save to it and edit your notes for you.</p></div>
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg></div><h3>Leaderboard</h3><p>Share your interactions and see your current stage on the leaderboard.</p></div>
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></div><h3>Calls</h3><p>Group and private calls, alongside your chats. You choose who is allowed to call you.</p></div>
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div><h3>In-app browser</h3><p>Browse the internet through the Hxf in-app browser without leaving the app.</p></div>
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg></div><h3>Hub</h3><p>Real information on exam dates and more. Share your thoughts and stay informed.</p></div>
+      <div class="card reveal"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-2-6-2-9-1v14c3-1 7-1 9 1 2-2 6-2 9-1V5c-3-1-7-1-9 1z"/><path d="M12 6v14"/></svg></div><h3>Novel summaries</h3><p>Read exam summaries of the novel so the story is clear before the exam.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SAFETY ============================ -->
+<section id="safety">
+  <div class="container">
+    <p class="eyebrow">Safety and privacy</p>
+    <h2>A study space you can trust</h2>
+    <p class="lead">Students should be able to chat without being spammed, scammed or added to places they never agreed to. Here's how Zindryx protects you.</p>
+
+    <div class="feature flip reveal" style="padding-bottom:10px;">
+      <div class="f-text">
+        <h3 style="font-size:20px;margin-bottom:8px;">You control who gets to you</h3>
+        <ul>
+          <li><b>Add-to-group control.</b> In Profile and privacy settings, choose who can add you to groups. Pick nobody and you can't be added without consent.</li>
+          <li><b>Invite links.</b> Groups need an invite link to join. Calls follow the same idea: you choose who can call you.</li>
+          <li><b>Message requests.</b> Non-friends must send a request and can send only two messages until you accept.</li>
+          <li><b>Report button.</b> Easy to reach whenever someone acts suspiciously.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="phone"><div class="screen">
+          <div class="s-bar"><b>Privacy</b></div>
+          <div class="s-body">
+            <div class="toggle"><span>Who can add me to groups<br><small style="color:var(--text-muted)">Nobody</small></span><span class="sw on"></span></div>
+            <div class="toggle"><span>Who can call me<br><small style="color:var(--text-muted)">Friends</small></span><span class="sw on"></span></div>
+            <div class="toggle"><span>Message requests</span><span class="sw on"></span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="feature reveal" style="padding-top:10px;">
+      <div class="f-text">
+        <h3 style="font-size:20px;margin-bottom:8px;">Tools for group admins</h3>
+        <ul>
+          <li><b>Block links and phone or account numbers.</b> Members can still chat. Only links and numbers are stopped.</li>
+          <li><b>Admin-only mode.</b> Only admins can send messages in the group.</li>
+          <li><b>Lock the group.</b> New join requests wait for admin approval.</li>
+          <li><b>Add by admin only.</b> Only admins can add members.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="phone"><div class="screen">
+          <div class="s-bar"><b>Group settings</b></div>
+          <div class="s-body">
+            <div class="toggle"><span>Block links</span><span class="sw on"></span></div>
+            <div class="toggle"><span>Block phone &amp; account numbers</span><span class="sw on"></span></div>
+            <div class="toggle"><span>Only admins can send</span><span class="sw"></span></div>
+            <div class="toggle"><span>Lock group (approve joins)</span><span class="sw on"></span></div>
+            <div class="toggle"><span>Only admins can add</span><span class="sw"></span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="grid two" style="margin-top:20px;">
+      <div class="card reveal mini"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><div><h3>Shadow-ban service</h3><p>If an account keeps acting fraudulently and gets reported several times, it is blocked. Their messages are then visible only to themselves. No one else sees them. The block stays until our server unblocks the account.</p></div></div>
+      <div class="card reveal mini"><div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4A8.5 8.5 0 0 1 3 12.6 8.4 8.4 0 0 1 11.5 4a8.5 8.5 0 0 1 9.5 7.5z"/></svg></div><div><h3>Real-time support</h3><p>Questions about the app? Our team answers students inside the app, in real time.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DEMOS ============================ -->
+<section id="demos">
+  <div class="container">
+    <p class="eyebrow">See it work</p>
+    <h2>Interactive demos</h2>
+    <p class="lead">Drag the bar below, swipe, or hold Shift and scroll to move between demos.</p>
+    <div style="max-width:420px;margin:24px auto 0;">
     <div class="demo-carousel">
       <div class="demo-track" id="demo-track">
 
@@ -610,88 +904,105 @@
         <span class="demo-slide-count" id="demo-slide-count">1/3</span>
       </div>
     </div>
+    </div>
   </div>
+</section>
 
-  <!-- How invites work / documentation -->
-  <div class="section">
-    <h2>How invite links work</h2>
-
-    <details class="faq-item" open>
-      <summary>What does an invite link share?</summary>
-      <p>Only your group's name, photo, and member count are shown before joining — never message content, unless the group admin turns on message previews for that specific link.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Can I control what a new member sees?</summary>
-      <p>Yes. When generating a link from group info, you choose an expiry (up to 7 days by default, shorter if you like) and whether new joiners can see messages sent before they joined. Turning that off doesn't delete anything for existing members — it only hides history for the new person.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Where is my data stored?</summary>
-      <p>Messages and group data are stored on Firebase Google Firestore. Invite links are validated and joins are processed directly against Firestore's security rules. Zindryx doesn't run a separate server that touches your messages.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Can a link be canceled early?</summary>
-      <p>Yes — the group admin can revoke a link at any time from group info, even before it expires.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>My code says "invalid". What does that mean?</summary>
-      <p>We couldn't find an invite with that code. Invite codes are 7 letters or numbers, so check for a typo, or paste the whole link and we'll pull the code out for you.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>My code says "expired" or "revoked".</summary>
-      <p>Expired means the link passed the expiry date set by the admin. Revoked means the admin cancelled it. Either way, ask the group admin for a new link.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>I opened the site and it says "No code detected".</summary>
-      <p>The link didn't include an invite code. Paste your code on the home page, or ask the admin to send the link again.</p>
-    </details>
+<!-- ============================ FAQ ============================ -->
+<section id="faq">
+  <div class="container" style="max-width:760px;">
+    <p class="eyebrow">FAQ</p>
+    <h2>Questions people ask</h2>
+    <details class="faq-item" open><summary>Which exams is Zindryx for?</summary><p>JAMB and WAEC. It started for JAMB students and now covers secondary school standard education. It is not for Post-UTME.</p></details>
+    <details class="faq-item"><summary>I'm in a higher institution. Can I use it?</summary><p>You can use the platform areas, like chat and calls, as a study-focused space. We don't guarantee learning content for higher-institution courses.</p></details>
+    <details class="faq-item"><summary>Is Zindryx on the Play Store?</summary><p>Not yet. For now you can download the app directly from the <a href="/zindryx_join">download page</a>, where every version is listed.</p></details>
+    <details class="faq-item"><summary>Can I practise without internet?</summary><p>Yes. Download questions while you're online, then practise offline later. It also saves your data.</p></details>
+    <details class="faq-item"><summary>What does an invite link share?</summary><p>Only the group's name, photo and member count are shown before joining. Never message content.</p></details>
+    <details class="faq-item"><summary>Can a link be cancelled early?</summary><p>Yes. The group admin can revoke a link at any time from group info, even before it expires.</p></details>
+    <details class="faq-item"><summary>My code says "invalid", "expired" or "revoked".</summary><p>Invalid: no invite with that code exists, so check for a typo. Expired: it passed its expiry date. Revoked: the admin cancelled it. For expired or revoked links, ask the group admin for a new one.</p></details>
+    <details class="faq-item"><summary>The site says "No code detected".</summary><p>The link had no invite code. Paste your code on the <a href="/">home page</a>, or ask the admin to send the link again.</p></details>
+    <details class="faq-item"><summary>Where is my data stored?</summary><p>Messages and group data are stored on Google Firebase Firestore. Invite links are checked and joins are processed against Firestore's security rules. Read our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms &amp; Conditions</a> for details.</p></details>
+    <details class="faq-item"><summary>What is OOOR?</summary><p>OOOR stands for Out Of Ordinary Response. It combines several large language models working together to give the best result in the most efficient way.</p></details>
+    <details class="faq-item"><summary>Why am I seeing messages from a blocked person?</summary><p>You aren't. Accounts blocked for fraud have their messages shown only to themselves. If you see someone behaving badly, use the report button.</p></details>
   </div>
+</section>
 
-</div>
-
-<div class="footer">
-  Zindryx · <a href="#" id="app-link-footer">Open the app</a> · <a href="/zindryx_join">Download</a>
-  <div class="theme-row">
-    <button class="theme-btn" id="theme-light-btn">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/><line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/></svg>
-      Light
-    </button>
-    <button class="theme-btn" id="theme-dark-btn">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.5 14.5a8.5 8.5 0 0 1-11-11 8.5 8.5 0 1 0 11 11z"/></svg>
-      Dark
-    </button>
+<!-- ============================ SUPPORT ============================ -->
+<section id="support">
+  <div class="container">
+    <p class="eyebrow">Support</p>
+    <h2>We're here to help</h2>
+    <div class="grid three">
+      <div class="card reveal"><h3>Email us</h3><p><a href="mailto:support@hxfhub.com" style="color:var(--accent);">support@hxfhub.com</a><br>Our Zindryx team replies to account and login issues.</p></div>
+      <div class="card reveal"><h3>In the app</h3><p>Use real-time in-app support to ask questions and get answers fast.</p></div>
+      <div class="card reveal"><h3>Legal</h3><p><a href="/terms" style="color:var(--accent);">Terms &amp; Conditions</a><br><a href="/privacy" style="color:var(--accent);">Privacy Policy</a></p></div>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- ============================ CTA ============================ -->
+<section class="cta">
+  <div class="container">
+    <div class="card reveal">
+      <h2>Ready to study together?</h2>
+      <p>Download Zindryx and join a practice room today.</p>
+      <div class="btn-row">
+        <a class="btn" href="/zindryx_join">Download for Android</a>
+        <a class="btn ghost" href="#" id="open-app-btn">Open in app</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div>Zindryx by Hxf Hub</div>
+    <div class="links"><a href="/zindryx_join">Download</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="mailto:support@hxfhub.com">Support</a></div>
+    <div class="theme-row"><button class="theme-btn" id="theme-light-btn">Light</button><button class="theme-btn" id="theme-dark-btn">Dark</button></div>
+  </div>
+</footer>
 
 <div class="toast" id="toast">Opening in Zindryx…</div>
 
 <script>
-  // ============================================================
-  // THEME — same pattern as index.html: system default, manual
-  // override persisted to localStorage with an in-memory fallback.
-  // ============================================================
-  let memoryTheme = null;
-  function getStoredTheme() {
-    try { return localStorage.getItem("zindryx-theme"); } catch (e) { return memoryTheme; }
-  }
-  function setStoredTheme(value) {
-    try { localStorage.setItem("zindryx-theme", value); } catch (e) { memoryTheme = value; }
-  }
-  function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
-    document.getElementById("theme-light-btn").classList.toggle("active", theme === "light");
-    document.getElementById("theme-dark-btn").classList.toggle("active", theme === "dark");
-    setStoredTheme(theme);
-  }
-  const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  applyTheme(getStoredTheme() || systemTheme);
-  document.getElementById("theme-light-btn").addEventListener("click", () => applyTheme("light"));
-  document.getElementById("theme-dark-btn").addEventListener("click", () => applyTheme("dark"));
+  // ---------- theme ----------
+  (function () {
+    var memoryTheme = null;
+    function get() { try { return localStorage.getItem("zindryx-theme"); } catch (e) { return memoryTheme; } }
+    function set(v) { try { localStorage.setItem("zindryx-theme", v); } catch (e) { memoryTheme = v; } }
+    function apply(t) {
+      document.documentElement.setAttribute("data-theme", t);
+      document.getElementById("theme-light-btn").classList.toggle("active", t === "light");
+      document.getElementById("theme-dark-btn").classList.toggle("active", t === "dark");
+      set(t);
+    }
+    apply(get() || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+    document.getElementById("theme-light-btn").addEventListener("click", function () { apply("light"); });
+    document.getElementById("theme-dark-btn").addEventListener("click", function () { apply("dark"); });
+  })();
+
+  // ---------- scroll reveal + active nav link ----------
+  (function () {
+    var items = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) { items.forEach(function (el) { el.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    items.forEach(function (el) { io.observe(el); });
+
+    var links = {};
+    document.querySelectorAll(".topnav a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+    var nav = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && links[e.target.id]) {
+          Object.keys(links).forEach(function (k) { links[k].classList.toggle("active", k === e.target.id); });
+        }
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    Object.keys(links).forEach(function (id) { var s = document.getElementById(id); if (s) nav.observe(s); });
+  })();
 
   // ============================================================
   // Demo carousel — 3 phone-frame slides (messaging / invite links /
@@ -853,32 +1164,46 @@
     updateThumb();
   })();
 
-
-  // ============================================================
-  // Open the app: the app has no custom scheme, it opens through the
-  // https App Link. On Android we use an intent link that falls back
-  // to the download page if the app isn't installed.
-  // ============================================================
-  const PKG = "com.zindryx.hxfhub";
-  const SITE = "https://linking.chadivavirtuals.name.ng";
-  const DOWNLOAD_URL = SITE + "/zindryx_join";
-
-  function openApp() {
-    const toast = document.getElementById("toast");
-    if (/android/i.test(navigator.userAgent)) {
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 1800);
-      window.location.href = "intent://linking.chadivavirtuals.name.ng/#Intent;scheme=https;package=" + PKG +
-        ";S.browser_fallback_url=" + encodeURIComponent(DOWNLOAD_URL) + ";end";
-    } else {
-      window.location.href = DOWNLOAD_URL;
+  // ---------- open the app (Android intent link; falls back to the download page) ----------
+  (function () {
+    var PKG = "com.zindryx.hxfhub";
+    var SITE = "https://linking.chadivavirtuals.name.ng";
+    function openApp(e) {
+      if (e) e.preventDefault();
+      var toast = document.getElementById("toast");
+      if (/android/i.test(navigator.userAgent)) {
+        toast.classList.add("show");
+        setTimeout(function () { toast.classList.remove("show"); }, 1800);
+        location.href = "intent://linking.chadivavirtuals.name.ng/#Intent;scheme=https;package=" + PKG +
+          ";S.browser_fallback_url=" + encodeURIComponent(SITE + "/zindryx_join") + ";end";
+      } else {
+        location.href = SITE + "/zindryx_join";
+      }
     }
-  }
-
-  document.getElementById("open-app-btn").addEventListener("click", openApp);
-  document.getElementById("app-link-footer").addEventListener("click", (e) => { e.preventDefault(); openApp(); });
-  document.querySelectorAll(".feature-btn").forEach(btn => btn.addEventListener("click", openApp));
+    document.getElementById("open-app-btn").addEventListener("click", openApp);
+  })();
 </script>
 
+<!-- Live version chip. The page works without this; it only fills in "Current app version". -->
+<script type="module">
+  try {
+    const FB = "https://www.gstatic.com/firebasejs/10.13.0/";
+    const [a, f] = await Promise.all([import(FB + "firebase-app.js"), import(FB + "firebase-firestore.js")]);
+    const app = a.initializeApp({
+      apiKey: "AIzaSyCNSBIH65aJRhW9g90nKU58xd2HsvUnIEo", authDomain: "my-jamb-app.firebaseapp.com",
+      projectId: "my-jamb-app", storageBucket: "my-jamb-app.firebasestorage.app",
+      messagingSenderId: "317049651307", appId: "1:317049651307:web:0bf600cf4435a10a2c712e"
+    });
+    const db = f.getFirestore(app);
+    const snap = await f.getDocs(f.query(f.collection(db, "app"), f.where("latest", "==", true), f.limit(1)));
+    const d = snap.docs[0] && snap.docs[0].data();
+    if (d && d.version_number) {
+      document.getElementById("live-version").textContent = String(d.version_number);
+      const rd = d.release_date && (d.release_date.toDate ? d.release_date.toDate() : new Date(d.release_date));
+      if (rd && !isNaN(rd)) document.getElementById("live-date").textContent =
+        "Released " + rd.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) + ".";
+    }
+  } catch (e) { console.warn("Live version unavailable:", e && e.code); }
+</script>
 </body>
 </html>
