@@ -7,20 +7,8 @@
       "namespace": "android_app",
       "package_name": "com.zindryx.hxfhub",
       "sha256_cert_fingerprints": [
-        07:0a:c3:4f:31:ee:87:4c:6d:aa:bc:2c:f1:9a:1c:97:9a:01:8e:42:99:00:7c:92:ec:83:74:82:5d:3d:f6:2a
-      ]
-    }
-  },
-  {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.zindryx.hxfhub.lite",
-      "sha256_cert_fingerprints": [
-        // REPLACE WITH LITE APP'S SHA-256 FINGERPRINT (e.g., "11:22:33:...")
+        "07:0A:C3:4F:31:EE:87:4C:6D:AA:BC:2C:F1:9A:1C:97:9A:01:8E:42:99:00:7C:92:EC:83:74:82:5D:3D:F6:2A"
       ]
     }
   }
-      ]
+]
