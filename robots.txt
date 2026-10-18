@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /call
+Disallow: /cee0c372f9f77f950f13
+
+Sitemap: https://linking.chadivavirtuals.name.ng/sitemap.xml

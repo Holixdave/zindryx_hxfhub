@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zindryx: Join a group</title>
-<meta name="description" content="Zindryx brings AI study help, CBT practice and campus group chats into one app. Got an invite code? Join your group here.">
+<title>Zindryx: JAMB &amp; WAEC Study App | Join a Group</title>
+<meta name="description" content="Zindryx is a JAMB and WAEC study app: practise CBT exams together, study with AI and chat safely. Got an invite code? Join your group here.">
+<link rel="canonical" href="https://linking.chadivavirtuals.name.ng/">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#BB86FC">
 
 <!-- Site icon: browser tab, bookmarks, home-screen shortcuts and link previews all use these -->
@@ -20,6 +22,9 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zindryx: Join a group">
 <meta name="twitter:image" content="https://hbgkqfutpwgvxbzkhsvb.supabase.co/storage/v1/object/public/chat_storage/1788703260701_ai_images/1788703260701_scaled_zindryx-linking-logo.png">
+<script>
+  try { if ((new URLSearchParams(location.search).get("code") || "").trim()) document.documentElement.classList.add("has-code"); } catch (e) {}
+</script>
 <script>
   // Runs before paint so there's no flash of the wrong theme.
   (function () {
@@ -264,6 +269,10 @@
   .feature-grid h2 { margin: 0 0 2px; }
   .feature-grid p { margin: 0; font-size: 12.5px; }
 
+  html.has-code .landing { display: none; }
+  html.has-code .card[style] { display: block !important; }
+  .landing.hidden { display: none !important; }
+
   /* ---------- Bottom sheet ---------- */
   .sheet-backdrop {
     position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 50;
@@ -295,9 +304,9 @@
 
 
 <!-- Landing: what people see when they open the site with no invite code -->
-<main class="landing hidden" id="landing">
+<main class="landing" id="landing">
   <h1>Study smarter.<br>Chat with your campus.</h1>
-  <p class="lead">Zindryx brings AI study help, CBT practice and group chats into one app. Got an invite code? Join your group below.</p>
+  <p class="lead">Zindryx is a JAMB and WAEC study app. Practise CBT exams together in real time, study with an AI built for learning, and chat in a safe space. Got an invite code? Join your group below.</p>
 
   <div class="panel">
     <h2>Have an invite code?</h2>
@@ -338,7 +347,7 @@
   <button id="sheet-ok">Enter a code</button>
 </div>
 
-<div class="card">
+<div class="card" style="display:none">
 
   <!-- Loading -->
   <div id="view-loading">
