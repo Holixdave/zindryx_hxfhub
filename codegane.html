@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Turbo Drift Pro - Ultimate Car Game</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body {
+            background: #0b0f19;
+            color: #fff;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            touch-action: none;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            max-height: 850px;
+            background: #151922;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: #222;
+        }
+        .screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 25, 0.92);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            z-index: 10;
+            text-align: center;
+        }
+        .screen.hidden { display: none; }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        p.subtitle {
+            color: #8b9bb4;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 280px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #0b0f19;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
+            text-transform: uppercase;
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            box-shadow: none;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .mode-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 280px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-card.selected {
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.1);
+        }
+        .mode-card h3 { font-size: 1.1rem; margin-bottom: 4px; color: #fff; }
+        .mode-card p { font-size: 0.8rem; color: #8b9bb4; }
+        
+        #hud {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .hud-item {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        #controls-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            height: 140px;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .control-btn {
+            pointer-events: auto;
+            width: 80px; height: 80px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .control-btn:active { background: rgba(0, 242, 254, 0.4); border-color: #00f2fe; }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- HUD -->
+        <div id="hud" class="hidden">
+            <div class="hud-item" id="score-display">SCORE: 0</div>
+            <div class="hud-item" id="speed-display">0 KM/H</div>
+        </div>
+
+        <!-- Touch Controls -->
+        <div id="controls-overlay" class="hidden">
+            <div style="display: flex; gap: 10px;">
+                <div class="control-btn" id="btn-left">◀</div>
+                <div class="control-btn" id="btn-right">▶</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="control-btn" id="btn-brake" style="background: rgba(239, 68, 68, 0.3);">■</div>
+                <div class="control-btn" id="btn-accel" style="background: rgba(16, 185, 129, 0.3);">▲</div>
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="main-menu" class="screen">
+            <h1>Turbo Drift</h1>
+            <p class="subtitle">Next-Gen Arcade Racing</p>
+            <div class="btn-group">
+                <button class="btn" onclick="showModeSelect()">Play Game</button>
+                <button class="btn btn-secondary" onclick="showGarage()">Garage</button>
+            </div>
+        </div>
+
+        <!-- Mode Select -->
+        <div id="mode-screen" class="screen hidden">
+            <h1>Select Mode</h1>
+            <p class="subtitle">Choose your racing challenge</p>
+            <div style="width: 100%; max-width: 280px; display: flex; flex-direction: column; align-items: center;">
+                <div class="mode-card selected" id="mode-classic" onclick="setMode('classic')">
+                    <h3>Classic Endless</h3>
+                    <p>Dodge traffic, collect coins, survive traffic rush.</p>
+                </div>
+                <div class="mode-card" id="mode-time" onclick="setMode('time')">
+                    <h3>Time Attack</h3>
+                    <p>Race against the clock, grab time boosts!</p>
+                </div>
+                <div class="mode-card" id="mode-survival" onclick="setMode('survival')">
+                    <h3>Hardcore Survival</h3>
+                    <p>Extreme speed, high traffic density. One hit is fatal.</p>
+                </div>
+            </div>
+            <div class="btn-group" style="margin-top: 15px;">
+                <button class="btn" onclick="startGame()">Start Race</button>
+                <button class="btn btn-secondary" onclick="showMenu()">Back</button>
+            </div>
+        </div>
+
+        <!-- Garage Screen -->
+        <div id="garage-screen" class="screen hidden">
+            <h1>Garage</h1>
+            <p class="subtitle">Select your supercar</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <div class="mode-card selected" style="width: 120px;" onclick="selectCar(0)">
+                    <h3 style="font-size:0.9rem;">Cyber GT</h3>
+                    <p>Balanced</p>
+                </div>
+                <div class="mode-card" style="width: 120px;" onclick="selectCar(1)">
+                    <h3 style="font-size:0.9rem;">Inferno V8</h3>
+                    <p>High Speed</p>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="showMenu()">Back</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen hidden">
+            <h1 style="color: #ef4444; -webkit-text-fill-color: #ef4444;">Wrecked</h1>
+            <p class="subtitle" id="final-stats">Score: 0</p>
+            <div class="btn-group">
+                <button class="btn" onclick="startGame()">Try Again</button>
+                <button class="btn btn-secondary" onclick="showMenu()">Main Menu</button>
+            </div>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        let gameState = 'MENU'; // MENU, MODE, GARAGE, PLAYING, GAMEOVER
+        let currentMode = 'classic';
+        let selectedCarType = 0;
+
+        let score = 0;
+        let speed = 0;
+        let maxSpeed = 15;
+        let roadOffset = 0;
+
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height - 150,
+            width: 44,
+            height: 80,
+            color: '#00f2fe'
+        };
+
+        let traffic = [];
+        let particles = [];
+        let keys = { left: false, right: false, accel: false, brake: false };
+
+        // UI navigation
+        function showMenu() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById('main-menu').classList.remove('hidden');
+            document.getElementById('hud').classList.add('hidden');
+            document.getElementById('controls-overlay').classList.add('hidden');
+            gameState = 'MENU';
+        }
+
+        function showModeSelect() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById('mode-screen').classList.remove('hidden');
+            gameState = 'MODE';
+        }
+
+        function showGarage() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById('garage-screen').classList.remove('hidden');
+            gameState = 'GARAGE';
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('mode-' + mode).classList.add('selected');
+        }
+
+        function selectCar(type) {
+            selectedCarType = type;
+            player.color = type === 0 ? '#00f2fe' : '#ff0055';
+            maxSpeed = type === 0 ? 15 : 18;
+        }
+
+        function startGame() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById('hud').classList.remove('hidden');
+            document.getElementById('controls-overlay').classList.remove('hidden');
+            
+            gameState = 'PLAYING';
+            score = 0;
+            speed = 5;
+            traffic = [];
+            particles = [];
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 150;
+        }
+
+        // Input handlers
+        window.addEventListener('keydown', e => {
+            if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = true;
+            if(e.key === 'ArrowRight' || e.key === 'd') keys.right = true;
+            if(e.key === 'ArrowUp' || e.key === 'w') keys.accel = true;
+            if(e.key === 'ArrowDown' || e.key === 's') keys.brake = true;
+        });
+        window.removeEventListener('keyup', ()=>{});
+        window.addEventListener('keyup', e => {
+            if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = false;
+            if(e.key === 'ArrowRight' || e.key === 'd') keys.right = false;
+            if(e.key === 'ArrowUp' || e.key === 'w') keys.accel = false;
+            if(e.key === 'ArrowDown' || e.key === 's') keys.brake = false;
+        });
+
+        // Touch buttons
+        const bindTouch = (id, keyName) => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[keyName] = true; });
+            el.addEventListener('touchend', (e) => { e.preventDefault(); keys[keyName] = false; });
+            el.addEventListener('mousedown', () => { keys[keyName] = true; });
+            el.addEventListener('mouseup', () => { keys[keyName] = false; });
+        };
+        bindTouch('btn-left', 'left');
+        bindTouch('btn-right', 'right');
+        bindTouch('btn-accel', 'accel');
+        bindTouch('btn-brake', 'brake');
+
+        function spawnTraffic() {
+            if(Math.random() < 0.035 && traffic.length < 5) {
+                const laneWidth = (canvas.width * 0.7) / 3;
+                const lane = Math.floor(Math.random() * 3);
+                const roadLeft = canvas.width * 0.15;
+                traffic.push({
+                    x: roadLeft + lane * laneWidth + laneWidth / 2 - 22,
+                    y: -100,
+                    width: 44,
+                    height: 80,
+                    speed: 4 + Math.random() * 3,
+                    color: ['#10b981', '#f59e0b', '#8b5cf6', '#ec4899'][Math.floor(Math.random()*4)]
+                });
+            }
+        }
+
+        function update() {
+            if(gameState !== 'PLAYING') return;
+
+            // Speed handling
+            if(keys.accel) speed = Math.min(maxSpeed, speed + 0.2);
+            else if(keys.brake) speed = Math.max(3, speed - 0.4);
+            else {
+                if(speed > 8) speed -= 0.1;
+                else if(speed < 8) speed += 0.1;
+            }
+
+            roadOffset = (roadOffset + speed) % 40;
+
+            // Steering
+            const steerSpeed = 6;
+            const roadLeft = canvas.width * 0.15;
+            const roadRight = canvas.width * 0.85;
+
+            if(keys.left) player.x -= steerSpeed;
+            if(keys.right) player.x += steerSpeed;
+
+            if(player.x < roadLeft + 10) player.x = roadLeft + 10;
+            if(player.x > roadRight - player.width - 10) player.x = roadRight - player.width - 10;
+
+            // Traffic update
+            spawnTraffic();
+            for(let i = traffic.length - 1; i >= 0; i--) {
+                let t = traffic[i];
+                t.y += speed - t.speed + 2;
+
+                // Collision detection
+                if(
+                    player.x < t.x + t.width &&
+                    player.x + player.width > t.x &&
+                    player.y < t.y + t.height &&
+                    player.y + player.height > t.y
+                ) {
+                    gameOver();
+                }
+
+                if(t.y > canvas.height + 100) {
+                    traffic.splice(i, 1);
+                    score += 100;
+                }
+            }
+
+            score += Math.floor(speed);
+            document.getElementById('score-display').innerText = `SCORE: ${score}`;
+            document.getElementById('speed-display').innerText = `${Math.floor(speed * 15)} KM/H`;
+        }
+
+        function drawCar(x, y, w, h, color) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, 10);
+            ctx.fill();
+
+            // Windshield
+            ctx.fillStyle = '#111';
+            ctx.fillRect(x + 6, y + 18, w - 12, 18);
+            ctx.fillRect(x + 6, y + h - 22, w - 12, 12);
+
+            // Headlights
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(x + 4, y + 2, 8, 4);
+            ctx.fillRect(x + w - 12, y + 2, 8, 4);
+
+            ctx.restore();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Road background
+            const roadLeft = canvas.width * 0.15;
+            const roadRight = canvas.width * 0.85;
+
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(roadLeft, 0, roadRight - roadLeft, canvas.height);
+
+            // Road shoulders & curb stripes
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(roadLeft - 10, 0, 10, canvas.height);
+            ctx.fillRect(roadRight, 0, 10, canvas.height);
+
+            // Lane dividers
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([30, 30]);
+            ctx.lineDashOffset = -roadOffset;
+
+            const laneWidth = (roadRight - roadLeft) / 3;
+            ctx.beginPath();
+            ctx.moveTo(roadLeft + laneWidth, 0);
+            ctx.lineTo(roadLeft + laneWidth, canvas.height);
+            ctx.moveTo(roadLeft + laneWidth * 2, 0);
+            ctx.lineTo(roadLeft + laneWidth * 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw Traffic
+            traffic.forEach(t => drawCar(t.x, t.y, t.width, t.height, t.color));
+
+            // Draw Player
+            if(gameState === 'PLAYING') {
+                drawCar(player.x, player.y, player.width, player.height, player.color);
+            }
+        }
+
+        function gameOver() {
+            gameState = 'GAMEOVER';
+            document.getElementById('hud').classList.add('hidden');
+            document.getElementById('controls-overlay').classList.add('hidden');
+            document.getElementById('final-stats').innerText = `Final Score: ${score}`;
+            document.getElementById('gameover-screen').classList.remove('hidden');
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+    </script>
+</body>
+</html>
