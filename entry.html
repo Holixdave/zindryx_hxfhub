@@ -292,14 +292,23 @@ footer a{margin-right:16px;font-weight:600;color:var(--ink)}
   </div>
 </section>
 
-<div style="text-align:center;padding:30px 0 10px;">
-  <div style="display:inline-flex;gap:10px;background:var(--surface);padding:8px;border-radius:16px;border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,0.05);">
-    <button onclick="document.documentElement.setAttribute('data-theme','light')" class="btn ghost" style="padding:10px 20px;font-size:0.9rem;border-radius:10px;cursor:pointer;">Light Mode</button>
-    <button onclick="document.documentElement.setAttribute('data-theme','dark')" class="btn ghost" style="padding:10px 20px;font-size:0.9rem;border-radius:10px;cursor:pointer;">Dark Mode</button>
+<footer class="footer">
+  <div class="wrap">
+    <div>Zindryx by Hxf Hub</div>
+    <div class="links"><a href="/zindryx_join">Download</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="mailto:support@hxfhub.com">Support</a></div>
+    <div class="theme-row"><button class="theme-btn" id="theme-light-btn">Light</button><button class="theme-btn" id="theme-dark-btn">Dark</button></div>
   </div>
-</div>
+</footer>
 
-<footer>
+<style>
+  .footer { border-top: 1px solid var(--line); padding: 30px 0 40px; color: var(--muted); font-size: .95rem; }
+  .footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+  .footer a { margin-right: 16px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .footer .links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .theme-btn { font-family: var(--font-head); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+  .theme-btn.active { background: var(--brand); color: var(--on-brand); border-color: transparent; }
+  .theme-row { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+</style>
   <div class="wrap">
     <div>
       <a href="https://linking.chadivavirtuals.name.ng/docs">About Zindryx</a>
@@ -318,6 +327,29 @@ footer a{margin-right:16px;font-weight:600;color:var(--ink)}
     e.preventDefault();
     this.style.display='none';
     document.getElementById('thanks').style.display='block';
+  });
+})();
+
+// Theme toggle logic - exact same as docs.html
+(function () {
+  var lightBtn = document.getElementById("theme-light-btn");
+  var darkBtn = document.getElementById("theme-dark-btn");
+  if (!lightBtn || !darkBtn) return;
+  function setActive(theme) {
+    lightBtn.classList.toggle("active", theme === "light");
+    darkBtn.classList.toggle("active", theme === "dark");
+  }
+  var current = document.documentElement.getAttribute("data-theme") || "light";
+  setActive(current);
+  lightBtn.addEventListener("click", function () {
+    document.documentElement.setAttribute("data-theme", "light");
+    try { localStorage.setItem("zindryx-theme", "light"); } catch (e) {}
+    setActive("light");
+  });
+  darkBtn.addEventListener("click", function () {
+    document.documentElement.setAttribute("data-theme", "dark");
+    try { localStorage.setItem("zindryx-theme", "dark"); } catch (e) {}
+    setActive("dark");
   });
 })();
 </script>

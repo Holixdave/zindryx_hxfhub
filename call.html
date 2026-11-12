@@ -4,51 +4,72 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web Call</title>
+<script>
+  (function () {
+    document.documentElement.classList.add("js");
+    var stored = null;
+    try { stored = localStorage.getItem("zindryx-theme"); } catch (e) {}
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
 <style>
   :root {
-    --ink: #1b1f23;
-    --paper: #f6f5f2;
-    --line: #d8d5cf;
-    --live: #2f6d4f;
-    --live-bg: #e6f0ea;
-    --dead: #a23c3c;
-    --dead-bg: #f5e6e6;
-    --ring-bg: #fff4d6;
-    --ring: #8a6b1f;
     --accent: #2b4c7e;
+    --accent-strong: #1a3a5c;
+    --radius: 14px;
+    --font-head: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  [data-theme="light"] {
+    --bg: #f6f5f2; --surface: #ffffff; --surface-2: #f0efe9; --border: #d8d5cf;
+    --text: #1b1f23; --text-secondary: #5c5c5c; --text-muted: #888888;
+    --ok: #2f6d4f; --ok-bg: #e6f0ea;
+    --live: #2f6d4f; --live-bg: #e6f0ea;
+    --dead: #a23c3c; --dead-bg: #f5e6e6;
+    --ring-bg: #fff4d6; --ring: #8a6b1f;
+  }
+  [data-theme="dark"] {
+    --bg: #131019; --surface: #1c1c1e; --surface-2: #1a1a24; --border: #2e2a38;
+    --text: #f2eefa; --text-secondary: #b8b0c6; --text-muted: #837c90;
+    --ok: #6fcf73; --ok-bg: #16281a;
+    --live: #6fcf73; --live-bg: #16281a;
+    --dead: #cf6f6f; --dead-bg: #2a1616;
+    --ring-bg: #3d351a; --ring: #c9a84a;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
     padding: 20px;
     max-width: 480px;
     margin: 0 auto;
   }
   h1 { font-size: 1.3rem; font-weight: 600; margin: 0 0 4px; }
-  .sub { color: #6b6b6b; font-size: 0.9rem; margin: 0 0 16px; }
+  .sub { color: var(--text-secondary); font-size: 0.9rem; margin: 0 0 16px; }
   .status {
     display: inline-block; padding: 4px 10px; border-radius: 4px;
     font-size: 0.85rem; font-weight: 600; margin-bottom: 16px;
   }
-  .status.idle { background: #eee; color: #666; }
+  .status.idle { background: var(--surface-2); color: var(--text-secondary); }
   .status.live { background: var(--live-bg); color: var(--live); }
   .status.dead { background: var(--dead-bg); color: var(--dead); }
   .status.ring { background: var(--ring-bg); color: var(--ring); }
   .panel {
-    border: 1px solid var(--line); border-radius: 6px; padding: 16px;
-    margin-bottom: 16px; background: white;
+    border: 1px solid var(--border); border-radius: 6px; padding: 16px;
+    margin-bottom: 16px; background: var(--surface);
   }
   .panel h2 { font-size: 0.95rem; margin: 0 0 10px; font-weight: 600; }
   video { width: 100%; background: #000; border-radius: 4px; margin-bottom: 8px; }
   #localVideo { max-height: 140px; object-fit: cover; }
   #remoteVideo { max-height: 260px; object-fit: cover; }
-  label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: #555; }
+  label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-secondary); }
   input[type=text] {
-    width: 100%; padding: 10px; border: 1px solid var(--line);
+    width: 100%; padding: 10px; border: 1px solid var(--border);
     border-radius: 4px; font-size: 1rem; margin-bottom: 10px;
+    background: var(--surface); color: var(--text);
   }
   .row { display: flex; gap: 8px; }
   .row button { flex: 1; }
@@ -58,27 +79,32 @@
   }
   .btn-primary { background: var(--accent); color: white; }
   .btn-danger { background: var(--dead); color: white; }
-  .btn-secondary { background: #eee; color: var(--ink); }
+  .btn-secondary { background: var(--surface-2); color: var(--text); }
   .btn-accept { background: var(--live); color: white; }
   button:disabled { opacity: 0.5; cursor: not-allowed; }
   .toggle-group { display: flex; gap: 8px; margin-bottom: 10px; }
-  .toggle-group button { margin-bottom: 0; background: #eee; color: var(--ink); }
+  .toggle-group button { margin-bottom: 0; background: var(--surface-2); color: var(--text); }
   .toggle-group button.active { background: var(--accent); color: white; }
   .uid-box {
     font-family: ui-monospace, monospace; font-size: 0.8rem;
-    background: #f0efe9; padding: 8px; border-radius: 4px;
+    background: var(--surface-2); padding: 8px; border-radius: 4px;
     margin-bottom: 10px; word-break: break-all;
   }
   .log {
     font-family: ui-monospace, monospace; font-size: 0.75rem;
-    background: #101418; color: #9fd3a0; padding: 10px; border-radius: 4px;
+    background: var(--surface-2); color: var(--ok); padding: 10px; border-radius: 4px;
     max-height: 140px; overflow-y: auto; white-space: pre-wrap;
   }
-  .hint { font-size: 0.8rem; color: #888; margin-top: -4px; margin-bottom: 10px; }
+  .hint { font-size: 0.8rem; color: var(--text-muted); margin-top: -4px; margin-bottom: 10px; }
   .incoming {
     display: none; border: 2px solid var(--ring); background: var(--ring-bg);
     border-radius: 6px; padding: 14px; margin-bottom: 16px;
   }
+
+  /* Theme toggle buttons - exact same as docs.html */
+  .theme-btn { font-family: var(--font-head); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary); cursor: pointer; }
+  .theme-btn.active { background: var(--accent); color: var(--accent-strong); border-color: transparent; }
+  .theme-row { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -452,6 +478,34 @@ hangupBtn.addEventListener("click", async () => {
 });
 
 callBtn.addEventListener("click", callPhone);
+
+// Theme toggle logic - exact same as docs.html
+(function () {
+  var lightBtn = document.getElementById("theme-light-btn");
+  var darkBtn = document.getElementById("theme-dark-btn");
+  if (!lightBtn || !darkBtn) return;
+  function setActive(theme) {
+    lightBtn.classList.toggle("active", theme === "light");
+    darkBtn.classList.toggle("active", theme === "dark");
+  }
+  var current = document.documentElement.getAttribute("data-theme") || "light";
+  setActive(current);
+  lightBtn.addEventListener("click", function () {
+    document.documentElement.setAttribute("data-theme", "light");
+    try { localStorage.setItem("zindryx-theme", "light"); } catch (e) {}
+    setActive("light");
+  });
+  darkBtn.addEventListener("click", function () {
+    document.documentElement.setAttribute("data-theme", "dark");
+    try { localStorage.setItem("zindryx-theme", "dark"); } catch (e) {}
+    setActive("dark");
+  });
+})();
 </script>
+
+<!-- Theme toggle in footer area -->
+<div style="text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+  <div class="theme-row"><button class="theme-btn" id="theme-light-btn">Light</button><button class="theme-btn" id="theme-dark-btn">Dark</button></div>
+</div>
 </body>
 </html>
