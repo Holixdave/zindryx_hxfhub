@@ -193,6 +193,8 @@ button.card:hover{border-color:var(--brown)}
 <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></symbol>
 <symbol id="book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 21V5M8 7h7"/></symbol>
 <symbol id="calc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></symbol>
+<symbol id="out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+<symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
 <symbol id="share" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6"/></symbol>
 </defs></svg>
 
@@ -212,7 +214,7 @@ button.card:hover{border-color:var(--brown)}
   <div class="who" id="who">
     <span class="dot" id="dot"></span>
     <div style="flex:1;min-width:0"><div class="nm" id="whoName">Not connected</div><small id="whoSub">OOOR 370 beta</small></div>
-    <button class="ic sm" id="setBtn" aria-label="Connection settings"><svg class="i"><use href="#gear"/></svg></button>
+    <button class="ic sm" id="setBtn" aria-label="Log out" title="Log out"><svg class="i"><use href="#out"/></svg></button>
   </div>
 </aside>
 
@@ -244,8 +246,6 @@ button.card:hover{border-color:var(--brown)}
       <textarea id="inp" rows="1" placeholder="Message OOOR" spellcheck="false"></textarea>
       <div class="row">
         <button class="ic sm" id="attach" aria-label="Attach files" title="Attach files"><svg class="i"><use href="#clip"/></svg></button>
-        <button class="ic sm" id="tSearch" aria-label="Web search" title="Web search"><svg class="i"><use href="#globe"/></svg></button>
-        <button class="ic sm" id="tCode" aria-label="Code mode" title="Code mode"><svg class="i"><use href="#code"/></svg></button>
         <span class="sp"></span>
         <button class="ic" id="send" aria-label="Send" disabled style="background:var(--ink);border-color:var(--ink);color:#fff"><svg class="i"><use href="#send"/></svg></button>
       </div>
@@ -257,13 +257,17 @@ button.card:hover{border-color:var(--brown)}
 
 <input type="file" id="picker" multiple hidden>
 
-<!-- connect -->
+<!-- account -->
 <div class="veil" id="vAuth"><div class="pn">
-  <header><h2>Connect to OOOR</h2><button class="ic sm" data-close aria-label="Close"><svg class="i"><use href="#x"/></svg></button></header>
+  <header><div class="mark" style="width:36px;height:36px;font-size:18px">O</div><h2 id="aTitle">Log in</h2></header>
   <div class="bd">
-    <div class="fld"><label for="tok">Access token</label><input id="tok" type="password" autocomplete="off" placeholder="Your backend token"></div>
-    <div class="fld"><label for="ep">Server address</label><input id="ep" type="url" value="https://chadivavirtuals.name.ng"></div>
-    <button class="btn" id="connect">Connect</button>
+    <div class="row" style="gap:8px"><button class="btn sm" id="tLogin" style="flex:1">Log in</button><button class="btn ghost sm" id="tSignup" style="flex:1">Create account</button></div>
+    <div class="fld" id="fName" style="display:none"><label for="aName">Full name</label><input id="aName" autocomplete="name" placeholder="Your name"></div>
+    <div class="fld"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+    <div class="fld" id="fPw"><label for="aPw">Password</label><input id="aPw" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
+    <div id="aErr" style="color:var(--bad);font-size:13px;display:none"></div>
+    <button class="btn" id="aGo"><span class="ld s" id="aLd" style="display:none"></span><span id="aGoT">Log in</span></button>
+    <button class="btn ghost sm" id="aForgot">Forgot password</button>
   </div>
 </div></div>
 
@@ -292,16 +296,19 @@ button.card:hover{border-color:var(--brown)}
 <script>
 const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
 const ic=n=>`<svg class="i"><use href="#${n}"/></svg>`;
-const CFG={API:'https://chadivavirtuals.name.ng',KEY:'ooor_v2',
-  EP:{chat:'/api/chat/stream',upload:'/api/files/upload',list:'/api/files',get:'/api/files/download',del:'/api/files'}};
-const S={token:null,api:CFG.API,chats:[],cur:null,busy:false,ctl:null,search:false,code:false,files:[],
+const CFG={API:'https://chadivavirtuals.name.ng',KEY:'ooor_v3',
+  FB_KEY:'PASTE_FIREBASE_WEB_API_KEY', /* Firebase console > Project settings > Web API key (safe to be public) */
+  EP:{chat:'/ai-query-stream',upload:'/web/files/upload',list:'/web/files',get:'/web/files/download',del:'/web/files'}};
+const S={idToken:null,refresh:null,exp:0,uid:null,email:'',name:'',api:CFG.API,chats:[],cur:null,busy:false,ctl:null,files:[],
   perm:{upload:true,export:true,print:true,persist:false}};
 
 /* ---------- storage ---------- */
-function load(){try{const d=JSON.parse(localStorage.getItem(CFG.KEY)||'{}');
-  S.token=d.token||null;S.api=d.api||CFG.API;S.chats=d.chats||[];S.cur=d.cur||null;Object.assign(S.perm,d.perm||{});}catch{}}
-function save(){try{localStorage.setItem(CFG.KEY,JSON.stringify({token:S.token,api:S.api,chats:S.chats.slice(0,60),cur:S.cur,perm:S.perm}));}
+function load(){try{const d=JSON.parse(localStorage.getItem(CFG.KEY)||'{}');S.refresh=d.refresh||null;S.uid=d.uid||null;S.email=d.email||'';S.name=d.name||'';S.api=d.api||CFG.API;Object.assign(S.perm,d.perm||{})}catch{}}
+function loadChats(){try{const d=JSON.parse(localStorage.getItem(CFG.KEY+':'+S.uid)||'{}');S.chats=d.chats||[];S.cur=d.cur||null}catch{S.chats=[]}}
+function save(){try{localStorage.setItem(CFG.KEY,JSON.stringify({refresh:S.refresh,uid:S.uid,email:S.email,name:S.name,api:S.api,perm:S.perm}));
+  if(S.uid)localStorage.setItem(CFG.KEY+':'+S.uid,JSON.stringify({chats:S.chats.slice(0,60),cur:S.cur}))}
   catch{toast('Storage is full. Export and clear old chats.','err')}}
+const DEV=(()=>{let d=localStorage.getItem('ooor_dev');if(!d){d='web-'+crypto.randomUUID();localStorage.setItem('ooor_dev',d)}return d})();
 
 /* ---------- ui helpers ---------- */
 function toast(m,t='ok'){const e=document.createElement('div');e.className='toast '+t;
@@ -320,20 +327,71 @@ $$('.sw').forEach(s=>s.onclick=async()=>{const k=s.dataset.perm;S.perm[k]=!S.per
   save();paintPerm()});
 function can(k,label){if(S.perm[k])return true;toast(label+' is off. Turn it on in Permissions.','err');open('#vPerm');return false}
 
-/* ---------- api ---------- */
+/* ---------- api + accounts (Firebase email/password, same accounts as the app) ---------- */
 const url=p=>S.api.replace(/\/$/,'')+p;
-const hdr=(x={})=>({...(S.token?{Authorization:'Bearer '+S.token}:{}),...x});
+const fbMsg=m=>({EMAIL_EXISTS:'That email already has an account. Log in instead.',INVALID_LOGIN_CREDENTIALS:'Wrong email or password.',INVALID_PASSWORD:'Wrong email or password.',EMAIL_NOT_FOUND:'No account with that email.',WEAK_PASSWORD:'Use a password of at least 6 characters.',INVALID_EMAIL:'Enter a valid email address.',USER_DISABLED:'This account is disabled.',TOO_MANY_ATTEMPTS_TRY_LATER:'Too many tries. Wait a bit and try again.',MISSING_PASSWORD:'Enter your password.'}[(m||'').split(' ')[0]]||'Something went wrong. Try again.');
+async function fb(path,body){
+  if(!CFG.FB_KEY||CFG.FB_KEY.startsWith('PASTE'))throw new Error('The Firebase web API key is not set in this page yet.');
+  const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:'+path+'?key='+CFG.FB_KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(fbMsg(j.error?.message));return j}
+async function sec(p,b,tok){try{const r=await fetch(url(p),{method:'POST',headers:{'Content-Type':'application/json',...(tok?{Authorization:'Bearer '+tok}:{})},body:JSON.stringify(b||{})});return r.ok?await r.json():null}catch{return null}}
+function setSession(j){S.idToken=j.idToken||j.id_token;S.refresh=j.refreshToken||j.refresh_token||S.refresh;S.uid=j.localId||j.user_id||S.uid;
+  S.email=j.email||S.email;S.name=j.displayName||S.name;S.exp=Date.now()+(+(j.expiresIn||j.expires_in)||3600)*1000-60000;save();paintAuth()}
+async function fresh(){
+  if(S.idToken&&Date.now()<S.exp)return;
+  if(!S.refresh)throw new Error('Sign in first');
+  const r=await fetch('https://securetoken.googleapis.com/v1/token?key='+CFG.FB_KEY,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(S.refresh)});
+  if(!r.ok){signOut();throw new Error('Session expired. Sign in again.')}setSession(await r.json())}
 async function api(p,o={}){
-  const r=await fetch(url(p),{...o,headers:hdr(o.headers)});
-  if(r.status===401){S.token=null;save();paintAuth();open('#vAuth');throw new Error('Session expired. Sign in again.')}
-  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.detail||e.message||'Request failed ('+r.status+')')}
+  await fresh();
+  const r=await fetch(url(p),{...o,headers:{...(o.headers||{}),Authorization:'Bearer '+S.idToken}});
+  if(r.status===401){signOut();throw new Error('Session expired. Sign in again.')}
+  if(!r.ok){const e=await r.json().catch(()=>({}));const d=e.detail;throw new Error((typeof d==='string'?d:d?.message)||e.message||'Request failed ('+r.status+')')}
   return r}
-function paintAuth(){const ok=!!S.token;$('#dot').classList.toggle('ok',ok);
-  $('#whoName').textContent=ok?'Connected':'Not connected';$('#whoSub').textContent=ok?S.api.replace(/^https?:\/\//,''):'OOOR 370 beta'}
-$('#setBtn').onclick=()=>{$('#tok').value=S.token||'';$('#ep').value=S.api;open('#vAuth')};
-$('#connect').onclick=async()=>{const t=$('#tok').value.trim(),e=$('#ep').value.trim()||CFG.API;
-  if(!t)return toast('Enter your token.','err');
-  S.token=t;S.api=e;save();paintAuth();shut('#vAuth');toast('Connected.')};
+function paintAuth(){const ok=!!S.idToken;$('#dot').classList.toggle('ok',ok);
+  $('#whoName').textContent=ok?(S.name||S.email):'Signed out';$('#whoSub').textContent=ok?S.email:'OOOR 370 beta'}
+function signOut(){S.idToken=null;S.refresh=null;S.uid=null;S.email='';S.name='';S.exp=0;S.chats=[];S.cur=null;S.files=[];paintChips();
+  try{const d=JSON.parse(localStorage.getItem(CFG.KEY)||'{}');localStorage.setItem(CFG.KEY,JSON.stringify({api:S.api,perm:S.perm}));void d}catch{}
+  paintAuth();paintList();paintMsgs();$('#fList').innerHTML='';open('#vAuth')}
+function afterAuth(){shut('#vAuth');loadChats();if(!S.chats.length)newChat();else{if(!chat())S.cur=S.chats[0].id;paintList();paintMsgs()}refreshFiles(true)}
+$('#setBtn').onclick=()=>{if(confirm('Log out of OOOR?'))signOut()};
+
+let aMode='login';
+function setMode(m){aMode=m;$('#aTitle').textContent={login:'Log in',signup:'Create account',reset:'Reset password'}[m];
+  $('#aGoT').textContent={login:'Log in',signup:'Create account',reset:'Send reset link'}[m];
+  $('#fName').style.display=m==='signup'?'':'none';$('#fPw').style.display=m==='reset'?'none':'';
+  $('#tLogin').className='btn sm'+(m==='signup'?' ghost':'');$('#tSignup').className='btn sm'+(m==='signup'?'':' ghost');
+  $('#aForgot').style.display=m==='login'?'':'none';$('#aPw').autocomplete=m==='signup'?'new-password':'current-password';aErr('')}
+function aErr(t){const e=$('#aErr');e.textContent=t;e.style.display=t?'':'none'}
+$('#tLogin').onclick=()=>setMode('login');$('#tSignup').onclick=()=>setMode('signup');$('#aForgot').onclick=()=>setMode('reset');
+const when=ms=>new Date(ms).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+async function doLogin(email,pw){
+  const pre=await sec('/auth/login-precheck',{email,deviceId:DEV});
+  if(pre?.locked)throw new Error(pre.permanent?'This login is locked. Contact support.':'Too many wrong tries. Try again at '+when(pre.untilMs)+'.');
+  let j;try{j=await fb('signInWithPassword',{email,password:pw,returnSecureToken:true})}
+  catch(e){if(/Wrong email|No account/.test(e.message)){const f=await sec('/auth/login-failed',{email,deviceId:DEV});
+      if(f?.locked)e.message=f.permanent?'This login is locked. Contact support.':'Too many wrong tries. Try again at '+when(f.untilMs)+'.';
+      else if(f?.attemptsLeft!=null)e.message+=' '+f.attemptsLeft+' tries left.'}throw e}
+  const ban=await sec('/auth/ban-status',{},j.idToken);
+  if(ban?.banned)throw new Error('This account is banned'+(ban.reason?': '+ban.reason:'')+'.');
+  setSession(j);sec('/auth/login-ok',{deviceId:DEV},j.idToken);sec('/auth/device-register',{deviceId:DEV},j.idToken)}
+async function doSignup(name,email,pw){
+  const d=await sec('/auth/device-check',{deviceId:DEV});
+  if(d&&d.allowed===false)throw new Error('Too many accounts were made on this device. Try again at '+when(d.untilMs)+'.');
+  let j=await fb('signUp',{email,password:pw,returnSecureToken:true});
+  if(name){try{await fb('update',{idToken:j.idToken,displayName:name,returnSecureToken:false});j.displayName=name}catch{}}
+  setSession(j);sec('/auth/device-register',{deviceId:DEV},j.idToken)}
+$('#aGo').onclick=async()=>{
+  const email=$('#aEmail').value.trim().toLowerCase(),pw=$('#aPw').value,name=$('#aName').value.trim();aErr('');
+  if(!email.includes('@'))return aErr('Enter a valid email address.');
+  if(aMode!=='reset'&&!pw)return aErr('Enter your password.');
+  if(aMode==='signup'&&pw.length<6)return aErr('Use a password of at least 6 characters.');
+  $('#aGo').disabled=true;$('#aLd').style.display='';
+  try{
+    if(aMode==='reset'){await fb('sendOobCode',{requestType:'PASSWORD_RESET',email});toast('Reset link sent. Check your email.');setMode('login')}
+    else{if(aMode==='login')await doLogin(email,pw);else await doSignup(name,email,pw);$('#aPw').value='';afterAuth();toast(aMode==='login'?'Welcome back.':'Account created.')}
+  }catch(e){aErr(e.message)}finally{$('#aGo').disabled=false;$('#aLd').style.display='none'}};
+$$('#vAuth input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')$('#aGo').click()}));
 
 /* ---------- chats ---------- */
 const chat=()=>S.chats.find(c=>c.id===S.cur);
@@ -384,37 +442,46 @@ inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!matchMedia(
 function gate(){const sb=$('#send');sb.disabled=!S.busy&&!inp.value.trim()&&!S.files.length;
   sb.innerHTML=ic(S.busy?'stop':'send');sb.disabled=sb.disabled&&!S.busy}
 $('#send').onclick=()=>S.busy?S.ctl?.abort():send();
-$('#tSearch').onclick=e=>{S.search=!S.search;e.currentTarget.classList.toggle('on',S.search)};
-$('#tCode').onclick=e=>{S.code=!S.code;e.currentTarget.classList.toggle('on',S.code)};
-$$('.card[data-p]').forEach(c=>c.onclick=()=>{inp.value=c.dataset.p;if(c.dataset.search){S.search=true;$('#tSearch').classList.add('on')}inp.focus();inp.dispatchEvent(new Event('input'))});
+$$('.card[data-p]').forEach(c=>c.onclick=()=>{inp.value=c.dataset.p;inp.focus();inp.dispatchEvent(new Event('input'))});
 
 async function send(){
   if(S.busy)return;const text=inp.value.trim();if(!text&&!S.files.length)return;
-  if(!S.token){open('#vAuth');return}
+  if(!S.idToken){open('#vAuth');return}
   if(S.files.some(f=>f.state==='up'))return toast('Wait for uploads to finish.','err');
   if(!chat())newChat();const c=chat();
   const ready=S.files.filter(f=>f.state==='done');
   c.msgs.push({id:'u'+Date.now(),role:'user',content:text,files:ready.map(f=>({name:f.name,path:f.path})),t:Date.now()});
-  if(c.title==='New chat'&&text)c.title=text.slice(0,48);
+  if(c.title==='New chat')c.title=(text||ready[0]?.name||'New chat').slice(0,48);
   S.files=[];paintChips();inp.value='';inp.style.height='auto';save();paintList();paintMsgs();run()}
 
 async function run(){
   const c=chat();S.busy=true;gate();S.ctl=new AbortController();
   const m=$('#msgs');$('#hero').style.display='none';m.style.display='flex';
   const reply={id:'a'+Date.now(),role:'assistant',content:'',t:Date.now()};
-  const el=bubble(reply);$('.acts',el).style.display='none';
-  const tx=$('.tx',el);tx.innerHTML='<div class="think"><span class="ld s"></span>Thinking</div>';m.append(el);scrollEnd(true);
-  let got=false;
+  const el=bubble(reply);$('.acts',el).style.display='none';const tx=$('.tx',el);m.append(el);
+  let got=false;const links=[];
+  const think=t=>{if(!got)tx.innerHTML='<div class="think"><span class="ld s"></span><span></span></div>',$('.think span:last-child',tx).textContent=t};
+  think('Thinking');scrollEnd(true);
+  const last=[...c.msgs].reverse().find(x=>x.role==='user');
+  const att=(last.files||[]).map(f=>f.path).filter(Boolean);
+  const query=(last.content||'Please look at my attached file(s).')+(att.length?'\n\n[Attached files saved in my workspace: '+att.join(', ')+']':'');
+  const on=ev=>{
+    if(ev.type==='status'&&ev.text)think(ev.text);
+    else if(ev.type==='text'&&ev.delta){got=true;reply.content+=ev.delta;tx.innerHTML=md(reply.content);scrollEnd()}
+    else if(ev.type==='ask_user'){got=true;reply.content=ev.question||'Pick an option to continue.';tx.innerHTML=md(reply.content)}
+    else if(ev.type==='final'){
+      if(ev.answer){reply.content=ev.answer}
+      [...(ev.files||[]),...(ev.images||[])].forEach(f=>{const u=typeof f==='string'?f:f?.url;if(u&&/^https?:/.test(u)&&!links.some(l=>l.u===u))links.push({u,n:(typeof f==='string'?u.split('/').pop().split('?')[0]:f.filename||f.title)||'file'})});
+      got=true;tx.innerHTML=md(reply.content);scrollEnd()}};
   try{
     const res=await api(CFG.EP.chat,{method:'POST',signal:S.ctl.signal,headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:c.msgs.map(x=>({role:x.role,content:x.content,files:x.files})),search:S.search,code:S.code})});
+      body:JSON.stringify({query,userid:S.uid,imageUrls:[],fileUrls:[],fileNames:[]})});
     const rd=res.body.getReader(),dec=new TextDecoder();let buf='';
     for(;;){const {done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
-      let chunk=buf;
-      if(/^\s*data:/m.test(buf)){const lines=buf.split('\n');buf=lines.pop();chunk=lines.map(l=>l.replace(/^data:\s?/,'')).filter(l=>l&&l!=='[DONE]').map(l=>{try{const j=JSON.parse(l);return j.delta??j.content??j.text??j.choices?.[0]?.delta?.content??''}catch{return l}}).join('')}
-      else buf='';
-      if(chunk){got=true;reply.content+=chunk;tx.innerHTML=md(reply.content);scrollEnd()}}
-    if(!got)tx.innerHTML='<p>No reply came back. Try again.</p>';
+      const lines=buf.split('\n');buf=lines.pop();
+      for(const l of lines){if(!l.startsWith('data:'))continue;const d=l.slice(5).trim();if(!d||d==='[DONE]')continue;try{on(JSON.parse(d))}catch{}}}
+    if(links.length)reply.content+='\n\n'+links.map(l=>'['+l.n.replace(/[\[\]]/g,'')+']('+l.u+')').join('\n');
+    if(!reply.content)tx.innerHTML='<p>No reply came back. Try again.</p>';
   }catch(err){
     if(err.name==='AbortError'){if(!got)tx.innerHTML='<p>Stopped.</p>'}
     else{tx.innerHTML='<p style="color:var(--bad)"></p>';$('p',tx).textContent=err.message;if(!got)reply.content=''}}
@@ -430,13 +497,13 @@ function paintChips(){const w=$('#chips');w.innerHTML='';
 function upload(file){
   const f={name:file.name,size:file.size,state:'up',pct:0};S.files.push(f);paintChips();
   return new Promise(res=>{const x=new XMLHttpRequest();f.xhr=x;const fd=new FormData();fd.append('file',file,file.name);
-    x.open('POST',url(CFG.EP.upload));if(S.token)x.setRequestHeader('Authorization','Bearer '+S.token);
+    x.open('POST',url(CFG.EP.upload));x.setRequestHeader('Authorization','Bearer '+S.idToken);
     x.upload.onprogress=e=>{if(e.lengthComputable){f.pct=e.loaded/e.total*100;const i=$$('#chips .chip')[S.files.indexOf(f)];if(i&&$('.bar i',i))$('.bar i',i).style.width=f.pct+'%'}};
     x.onload=()=>{if(x.status>=200&&x.status<300){let j={};try{j=JSON.parse(x.responseText)}catch{}f.state='done';f.path=j.path||j.name||file.name;toast(file.name+' uploaded.')}
       else{f.state='err';toast(file.name+' failed ('+x.status+').','err')}paintChips();res()};
     x.onerror=()=>{f.state='err';toast('Network error uploading '+file.name,'err');paintChips();res()};
     x.onabort=()=>res();x.send(fd)})}
-async function addFiles(list){if(!can('upload','File upload'))return;if(!S.token)return open('#vAuth');
+async function addFiles(list){if(!can('upload','File upload'))return;if(!S.idToken)return open('#vAuth');try{await fresh()}catch(e){return toast(e.message,'err')}
   await Promise.all([...list].map(upload));refreshFiles(true)}
 $('#attach').onclick=()=>{if(can('upload','File upload'))$('#picker').click()};
 $('#fUp').onclick=()=>$('#attach').click();
@@ -451,7 +518,7 @@ inp.addEventListener('paste',e=>{const f=[...(e.clipboardData?.files||[])];if(f.
 $('#filesBtn').onclick=()=>{open('#vFiles');refreshFiles()};
 $('#fRef').onclick=()=>refreshFiles();
 async function refreshFiles(silent){
-  const box=$('#fList');if(!S.token){box.innerHTML='<div class="empty">Connect first to see your files.</div>';return}
+  const box=$('#fList');if(!S.idToken){box.innerHTML='<div class="empty">Log in to see your files.</div>';return}
   if(!silent||$('#vFiles').classList.contains('on'))box.innerHTML='<div class="empty"><span class="ld"><i>O</i></span></div>';
   try{const j=await (await api(CFG.EP.list)).json();const L=j.files||j||[];
     if(!L.length){box.innerHTML='<div class="empty">No files yet. Upload one to get started.</div>';return}
@@ -499,10 +566,11 @@ const closeSb=()=>{$('#sb').classList.remove('on');$('#sbv').classList.remove('o
 $('#menuBtn').onclick=()=>{$('#sb').classList.add('on');$('#sbv').classList.add('on')};$('#sbv').onclick=closeSb;
 $('#newChat').onclick=newChat;$('#permBtn').onclick=()=>open('#vPerm');
 
-load();paintPerm();paintAuth();
-if(!S.chats.length)newChat();else{if(!chat())S.cur=S.chats[0].id;paintList();paintMsgs()}
-gate();
-addEventListener('load',()=>setTimeout(()=>{$('#boot').classList.add('off');if(!S.token)open('#vAuth')},350));
+load();paintPerm();paintAuth();setMode('login');gate();
+(async()=>{
+  if(S.refresh){try{await fresh();afterAuth()}catch{}}
+  addEventListener('load',()=>{},{once:true});
+  setTimeout(()=>{$('#boot').classList.add('off');if(!S.idToken)open('#vAuth')},450)})();
 </script>
 </body>
 </html>
