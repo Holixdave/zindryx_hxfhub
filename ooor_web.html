@@ -247,7 +247,7 @@ button.card:hover{border-color:var(--brown)}
       <div class="row">
         <button class="ic sm" id="attach" aria-label="Attach files" title="Attach files"><svg class="i"><use href="#clip"/></svg></button>
         <span class="sp"></span>
-        <button class="ic" id="send" aria-label="Send" disabled style="background:var(--ink);border-color:var(--ink);color:#fff"><svg class="i"><use href="#send"/></svg></button>
+        <button class="ic" id="sendBtn" aria-label="Send" disabled style="background:var(--ink);border-color:var(--ink);color:#fff"><svg class="i"><use href="#send"/></svg></button>
       </div>
     </div>
     <div class="hint">OOOR can make mistakes. Check important answers.</div>
@@ -439,9 +439,9 @@ $('#msgs').addEventListener('click',async e=>{
 const inp=$('#inp');
 inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,200)+'px';gate()});
 inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!matchMedia('(pointer:coarse)').matches){e.preventDefault();send()}});
-function gate(){const sb=$('#send');sb.disabled=!S.busy&&!inp.value.trim()&&!S.files.length;
+function gate(){const sb=$("#sendBtn");sb.disabled=!S.busy&&!inp.value.trim()&&!S.files.length;
   sb.innerHTML=ic(S.busy?'stop':'send');sb.disabled=sb.disabled&&!S.busy}
-$('#send').onclick=()=>S.busy?S.ctl?.abort():send();
+$("#sendBtn").onclick=()=>S.busy?S.ctl?.abort():send();
 $$('.card[data-p]').forEach(c=>c.onclick=()=>{inp.value=c.dataset.p;inp.focus();inp.dispatchEvent(new Event('input'))});
 
 async function send(){
