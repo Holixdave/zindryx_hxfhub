@@ -297,7 +297,7 @@ button.card:hover{border-color:var(--brown)}
 const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
 const ic=n=>`<svg class="i"><use href="#${n}"/></svg>`;
 const CFG={API:'https://chadivavirtuals.name.ng',KEY:'ooor_v3',
-  FB_KEY:'AIzaSyCNSBIH65aJRhW9g90nKU58xd2HsvUnIEo', /* Firebase console > Project settings > Web API key (safe to be public) */
+  FB_KEY: 'AIzaSyCNSBIH65aJRhW9g90nKU58xd2HsvUnIEo',/* Firebase console > Project settings > Web API key (safe to be public) */
   EP:{chat:'/ai-query-stream',upload:'/web/files/upload',list:'/web/files',get:'/web/files/download',del:'/web/files'}};
 const S={idToken:null,refresh:null,exp:0,uid:null,email:'',name:'',api:CFG.API,chats:[],cur:null,busy:false,ctl:null,files:[],
   perm:{upload:true,export:true,print:true,persist:false}};
